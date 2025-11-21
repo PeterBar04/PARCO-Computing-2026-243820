@@ -1,5 +1,4 @@
-# Project Title
- Optimization of Sparse Matrix Vector Multiplication (SpMV)
+# Optimization of Sparse Matrix Vector Multiplication (SpMV)
 using OpenMP
 
 ## How to build/run
