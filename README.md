@@ -1,5 +1,4 @@
-# Optimization of Sparse Matrix Vector Multiplication (SpMV)
-using OpenMP
+# Optimization of Sparse Matrix Vector Multiplication (SpMV) using OpenMP
 
 ## How to build/run
 1. Submit the job to the UniTn cluster (see How to Compile and Run (Cluster) below). This will compile the C++ code, execute the benchmarks, and generate the necessary .csv files in the results/ directory.
