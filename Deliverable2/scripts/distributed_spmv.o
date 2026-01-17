@@ -1,0 +1,39 @@
+Current directory is: /home/pietro.baroni-2/Deliverable2/scripts
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 813 Jan 17 14:53 compile.sh
+g++-9.1.0 (GCC) 9.1.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+gcc-9.1.0 (GCC) 9.1.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Compiling...
+Processing ./../data/testMatrix2.mtx with 1 processes...
+Matrix COO format
+
+row_index: 0 0 1 2 3 3 4 4 5 5 
+column_index: 0 3 1 5 0 3 2 4 1 5 
+data: 12 3.5 10.1 4 3.5 15 2.2 9 1.1 13 
+
+Matrix CSR format
+
+POINTER: 0 2 3 4 6 8 10 
+INDEX: 0 3 1 5 0 3 2 4 1 5 
+DATA: 12 3.5 10.1 4 3.5 15 2.2 9 1.1 13 
+
+Processing ./../data/testMatrix.mtx with 1 processes...
+Matrix COO format
+
+row_index: 0 1 2 3 4 5 
+column_index: 0 1 2 3 4 5 
+data: 1 1 1 1 1 1 
+
+Matrix CSR format
+
+POINTER: 0 1 2 3 4 5 6 
+INDEX: 0 1 2 3 4 5 
+DATA: 1 1 1 1 1 1 
+

@@ -1,0 +1,34 @@
+#!/bin/bash
+#PBS -N distributed_spmv
+#PBS -o ./distributed_spmv.o
+#PBS -e ./distributed_spmv.e
+#PBS -q short_cpuQ
+#PBS -l walltime=1:00:00
+#PBS -l select=2:ncpus=4:mpiprocs=4:mem=2gb
+
+
+# Print the name of the file that contains the list of the nodes assigned to the job and list all the nodes
+#NODES=$(cat $PBS_NODEFILE)
+#echo The running nodes are $NODES
+
+# Get the list of unique nodes assigned to the job
+#NODES=$(sort -u $PBS_NODEFILE)
+#echo The running nodes are $NODES
+
+# Loop through each node and get architecture information
+#for NODE in $NODES; do
+#    echo "Node: $NODE"
+#    ssh $NODE "lscpu"
+#done
+
+
+# Change to the directory where the job was submitted
+cd $HOME/PARCO-Computing-2026-243820/DELIVERABLE_2/scripts
+
+# 2. Check if we are actually in the right place (for debugging)
+echo "Current directory is: $(pwd)"
+ls -l compile.sh
+
+# Call the compilation and execution script
+chmod +x ./compile.sh
+./compile.sh
