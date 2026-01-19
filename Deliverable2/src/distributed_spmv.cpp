@@ -72,8 +72,14 @@ int main(int argc, char** argv) {
     vector<int> nnz_counts(world_size, 0); //contains the number of elements to send to each process
     vector<int> nnz_displs(world_size, 0); //contains the displacement to apply to the message sent to each process.
 
+    vector<int> shuffled_lengths; //csr row pointer array grouped by rank
     vector<int> shuffled_idx; //csr index array grouped by rank
     vector<double> shuffled_data; //csr data array grouped by rank
+    
+    vector<int> local_lengths;
+    vector<int> local_idx;
+    vector<double> local_data;
+    
 
 	if (argc < 1) {
         cout << "Usage: ./distributed_spmv <matrixName>" << endl;
@@ -117,17 +123,30 @@ int main(int argc, char** argv) {
         }
     }
 
-    // Every rank needs to know its own NNZ count to resize its local arrays
-    MPI_Scatter(nnz_counts.data(), 1, MPI_INT, &local_nnz, 1, MPI_INT, ROOT_RANK, MPI_COMM_WORLD);
 
+    vector<int> current_len_pos(world_size, 0);
+    vector<int> len_counts(world_size);
+    vector<int> len_displs(world_size, 0);
+
+    for(int i=0; i<world_size; i++) {
+        len_counts[i] = (total_rows / world_size) + (i < (total_rows % world_size) ? 1 : 0);
+        if(i > 0) len_displs[i] = len_displs[i-1] + len_counts[i-1];
+    }
 
     //Rank 0 organizes the full_idx and full_val so they are grouped by rank.
     if (rank == ROOT_RANK) {
         shuffled_idx.resize(total_nnz);
         shuffled_data.resize(total_nnz);
+        shuffled_lengths.resize(total_rows);
         
         // Track where we are writing for each rank within the shuffled buffers
         vector<int> current_pos = nnz_displs; 
+        vector<int> write_ptr = len_displs;
+
+        for(int i=0; i<world_size; i++) {
+            len_counts[i] = (total_rows / world_size) + (i < (total_rows % world_size) ? 1 : 0);
+            if(i > 0) len_displs[i] = len_displs[i-1] + len_counts[i-1];
+        }
 
         for (int i = 0; i < total_rows; i++) {
             int target = i % world_size;
@@ -144,11 +163,18 @@ int main(int argc, char** argv) {
                 shuffled_data.begin() + current_pos[target]);
 
             current_pos[target] += row_nnz;
+
+            shuffled_lengths[write_ptr[target]] = row_nnz;
+            write_ptr[target]++;
         }
     }
 
-    vector<int> local_idx(local_nnz);
-    vector<double> local_data(local_nnz);
+    // Every rank needs to know its own NNZ count to resize its local arrays
+    MPI_Scatter(nnz_counts.data(), 1, MPI_INT, &local_nnz, 1, MPI_INT, ROOT_RANK, MPI_COMM_WORLD);
+
+    local_idx.resize(local_nnz);
+    local_data.resize(local_nnz);
+    local_lengths.resize(local_nrows);
 
     MPI_Scatterv(shuffled_idx.data(), nnz_counts.data(), nnz_displs.data(), MPI_INT,
                 local_idx.data(), local_nnz, MPI_INT, ROOT_RANK, MPI_COMM_WORLD);
@@ -156,8 +182,16 @@ int main(int argc, char** argv) {
     MPI_Scatterv(shuffled_data.data(), nnz_counts.data(), nnz_displs.data(), MPI_DOUBLE,
              local_data.data(), local_nnz, MPI_DOUBLE, ROOT_RANK, MPI_COMM_WORLD);
 
+    MPI_Scatterv(shuffled_lengths.data(), len_counts.data(), len_displs.data(), MPI_INT,
+             local_lengths.data(), local_nrows, MPI_INT, ROOT_RANK, MPI_COMM_WORLD);
 
-
+        
+    // Rebuild the local CSR pointer array
+    vector<int> local_ptr(local_nrows + 1);
+    local_ptr[0] = 0;
+    for (int i = 0; i < local_nrows; i++) {
+        local_ptr[i+1] = local_ptr[i] + local_lengths[i];
+    }
 
     // print received local_idx and local_data
     for (int r = 0; r < world_size; r++) {
@@ -165,6 +199,10 @@ int main(int argc, char** argv) {
             printf("\n--- Rank %d | local_nrows: %d | local_nnz: %d ---\n", 
                     rank, local_nrows, (int)local_idx.size());
             
+            printf("local_pointer: [ ");
+            for (int val : local_ptr) printf("%d ", val);
+            printf("]\n");
+
             printf("local_idx: [ ");
             for (int val : local_idx) printf("%d ", val);
             printf("]\n");
@@ -183,7 +221,7 @@ int main(int argc, char** argv) {
 
 
 
-    
+
     MPI_Finalize();
   
 	return 0;
