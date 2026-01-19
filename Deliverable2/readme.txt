@@ -1,0 +1,2 @@
+. Why use Cyclic Partitioning?
+Professors often suggest this because it is excellent for Load Balancing. If the "top" of your matrix is very dense and the "bottom" is very sparse, Block partitioning would leave some processes working harder than others. Cyclic partitioning "samples" rows from the whole matrix, making it likely that every process gets a similar total number of non-zero entries.

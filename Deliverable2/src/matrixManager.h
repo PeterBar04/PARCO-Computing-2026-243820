@@ -30,12 +30,11 @@ class MatrixCOO{
 //---------------------------------------//
 //Matrix in CSR format
 class MatrixCSR{
-    private:
+    public:
 	vector<int> pointer; //row  array
 	vector<int> index;   //column index array
 	vector<double> data;
 	
-    public:
 	void print();
     void convertCOOInCSR(MatrixCOO& coo);
 };
