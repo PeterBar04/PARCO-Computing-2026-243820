@@ -25,7 +25,7 @@ OUT_FILE="$SRC_DIR/distributed_spmv.out"
 
 # 1. Compile ONCE
 echo "Compiling..."
-mpicxx $SRC_DIR/distributed_spmv.cpp "$SRC_DIR/matrixManager.cpp" -o "$OUT_FILE"
+mpicxx $SRC_DIR/distributed_spmv.cpp "$SRC_DIR/matrixManager.cpp" "$SRC_DIR/processManager.cpp" -o "$OUT_FILE"
 
 # 2. Check if compilation succeeded
 if [ $? -ne 0 ]; then
@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # 3. Run for each matrix
-NP=4 #NP = number of processes
+NP=5 #NP = number of processes
 MATRICES=($MATRIX_DIR/*.mtx)
 
 for MATRIX_FILE in "${MATRICES[@]}"; do

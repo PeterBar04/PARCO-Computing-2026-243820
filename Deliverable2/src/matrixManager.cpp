@@ -72,8 +72,8 @@ void MatrixCOO::readMatrixFromFile(const string& filename){
 //Convert Matrix from COO to CSR
 void MatrixCSR::convertCOOInCSR(MatrixCOO& coo){
 
-	int nrows = coo.rows;
-    int nnz   = coo.nnz;
+	nrows = coo.rows;
+    nnz   = coo.nnz;
 
     // --- Combine the vectors in a triplet
     struct Entry {

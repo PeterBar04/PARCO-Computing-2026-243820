@@ -31,6 +31,9 @@ class MatrixCOO{
 //Matrix in CSR format
 class MatrixCSR{
     public:
+	int nrows;
+	int nnz;
+
 	vector<int> pointer; //row  array
 	vector<int> index;   //column index array
 	vector<double> data;
