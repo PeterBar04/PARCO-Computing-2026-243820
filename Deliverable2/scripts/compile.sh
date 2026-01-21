@@ -35,7 +35,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # 3. Run for each matrix
-NP=4 #NP = number of processes
+NP=2 #NP = number of processes
 MATRICES=($MATRIX_DIR/*.mtx)
 
 for MATRIX_FILE in "${MATRICES[@]}"; do
