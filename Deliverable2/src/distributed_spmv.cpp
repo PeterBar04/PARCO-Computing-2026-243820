@@ -38,8 +38,11 @@ int main(int argc, char** argv) {
 
     p.setupData(matrixName);
     p.scatterMatrix();
+    p.distributeVectorX();
     
     p.print();
+
+    p.scatterVectorX();
 
 	return 0;
 }

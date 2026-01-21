@@ -2,7 +2,7 @@
 #PBS -N distributed_spmv
 #PBS -o ./distributed_spmv.o
 #PBS -e ./distributed_spmv.e
-#PBS -q short_cpuQ
+#PBS -q shortCPUQ
 #PBS -l walltime=1:00:00
 #PBS -l select=2:ncpus=4:mpiprocs=4:mem=2gb
 
