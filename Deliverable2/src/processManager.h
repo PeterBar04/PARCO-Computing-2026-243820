@@ -39,6 +39,10 @@ private:
     map<int, int> ghost_map;
     vector<double> ghost_buffer;
 
+    // Time values
+    double comm_time;
+    double execution_time;
+
     void initGlobalX(vector<double>& v, int cols);
 
     // Methods used in scatterData()
@@ -66,6 +70,11 @@ private:
 public:
     // Constructor
     Process(int argc, char** argv); 
+
+    //Getter
+    int getRank();
+    double getCommTime();
+    double getExecuteTime();
 
     // This method would encapsulate all your logic
     void setupData(string matrixName);

@@ -1,40 +1,79 @@
 #include "matrixManager.h"
 
+#include <algorithm> // Required for std::min
+
 void MatrixCOO::print() {
-    cout << "Matrix COO format\n" <<endl ;
+    // 1. Determine the limit (10 or the actual size, whichever is smaller)
+    // We cast .size() to int to avoid warnings
+    int limit = std::min((int)row_index.size(), 10); 
+
+    cout << "Matrix COO format (Preview first " << limit << " entries)\n" << endl;
+
+    // --- ROWS ---
     cout << "rows: ";
-    for(int i: row_index){
-        cout << i << " ";
-    } cout << endl;
-    
+    for(int i = 0; i < limit; i++){
+        cout << row_index[i] << " ";
+    }
+    // Visual indicator if there are more elements
+    if (row_index.size() > 10) cout << "... (" << row_index.size() << " total)";
+    cout << endl;
+
+    // --- COLS ---
     cout << "cols: ";
-    for(int i: column_index){
-        cout << i << " ";
-    } cout << endl;
-    
+    for(int i = 0; i < limit; i++){
+        cout << column_index[i] << " ";
+    }
+    if (column_index.size() > 10) cout << "...";
+    cout << endl;
+
+    // --- DATA ---
     cout << "data: ";
-    for(double i: data){
-        cout << i << " ";
-    } cout << endl;
+    for(int i = 0; i < limit; i++){
+        cout << data[i] << " ";
+    }
+    if (data.size() > 10) cout << "...";
+    cout << endl;
+    
     cout << endl;
 }
 
-void MatrixCSR::print(){
-    cout << "Matrix CSR format\n" <<endl;
+#include <algorithm> // Required for std::min
+#include <iostream>
+
+void MatrixCSR::print() {
+    // 1. Calculate limits
+    // pointer vector size is usually (rows + 1)
+    int ptr_limit = std::min((int)pointer.size(), 10);
+    
+    // index and data vectors size is NNZ (Total Non-Zeros)
+    int nnz_limit = std::min((int)index.size(), 10);
+
+    cout << "Matrix CSR format (Preview first 10 entries)\n" << endl;
+
+    // --- POINTER ARRAY ---
     cout << "POINTER: ";
-    for(int i: pointer){
-        cout << i << " ";
-    } cout << endl;
+    for(int i = 0; i < ptr_limit; i++){
+        cout << pointer[i] << " ";
+    }
+    if (pointer.size() > 10) cout << "... (" << pointer.size() << " total)";
+    cout << endl;
     
+    // --- INDEX ARRAY ---
     cout << "INDEX  : ";
-    for(int i: index){
-        cout << i << " ";
-    } cout << endl;
+    for(int i = 0; i < nnz_limit; i++){
+        cout << index[i] << " ";
+    }
+    if (index.size() > 10) cout << "... (" << index.size() << " total)";
+    cout << endl;
     
+    // --- DATA ARRAY ---
     cout << "DATA   : ";
-    for(double i: data){
-        cout << i << " ";
-    } cout << endl;
+    for(int i = 0; i < nnz_limit; i++){
+        cout << data[i] << " ";
+    }
+    if (data.size() > 10) cout << "... (" << data.size() << " total)";
+    cout << endl;
+    
     cout << endl;
 }
 

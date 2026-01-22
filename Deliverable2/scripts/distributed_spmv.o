@@ -1,42 +1,34 @@
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
--rwxr-xr-x 1 pietro.baroni-2 utenti cluster hpc (ada)-(9393) 1018 Jan 21 09:45 compile.sh
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 2952 Jan 22 12:03 compile.sh
 Using the following compiler versions:
-gcc (GCC) 12.3.0
-Copyright (C) 2022 Free Software Foundation, Inc.
+gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)
+Copyright (C) 2015 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-g++ (GCC) 12.3.0
-Copyright (C) 2022 Free Software Foundation, Inc.
+g++-9.1.0 (GCC) 9.1.0
+Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 Compiling...
-Processing ./../data/testMatrix2.mtx with 2 processes...
-
---- Rank 1 | Rows: 3 | NNZ: 5 ---
-  Computed Y (Preview): [ 413.73 232.66 590.13 ]
-
-================ GLOBAL SUMMARY ================
-Matrix Dimensions : 6 x 6
-Total Non-Zeros   : 10
-Global X (Preview): [ 46.10 40.96 32.50 4.75 88.31 41.93 ]
-
---- Rank 0 | Rows: 3 | NNZ: 5 ---
-  Computed Y (Preview): [ 569.83 167.71 866.27 ]
-
-================================================
-Processing ./../data/twotone.mtx with 2 processes...
-
---- Rank 1 | Rows: 60375 | NNZ: 606569 ---
-  Computed Y (Preview): [ 6162.57 10.19 -746.10 88.00 -58854.97 -155.02 -138.01 -228.29 -222.48 -69.95 ... (60375 total)]
-
-================ GLOBAL SUMMARY ================
-Matrix Dimensions : 120750 x 120750
-Total Non-Zeros   : 1224224
-Global X (Preview): [ 83.24 5.54 11.25 47.51 46.49 68.67 25.59 60.58 8.49 75.97 ... (120750 total) ]
-
---- Rank 0 | Rows: 60375 | NNZ: 617655 ---
-  Computed Y (Preview): [ -1937.74 -249.08 -438.95 -122.34 -182.40 -89.54 -139.51 -48.51 -118.45 -186.77 ... (60375 total)]
-
-================================================
+==================================================
+Processing Matrix: twotone.mtx
+==================================================
+  -> Running with NP = 1 (10 iterations)
+..........
+  -> Running with NP = 2 (10 iterations)
+..........
+  -> Running with NP = 4 (10 iterations)
+..........
+  -> Running with NP = 8 (10 iterations)
+..........
+  -> Running with NP = 16 (10 iterations)
+..........
+  -> Running with NP = 32 (10 iterations)
+..........
+  -> Running with NP = 64 (10 iterations)
+..........
+  -> Running with NP = 128 (10 iterations)
+..........
+Done! Results saved in ./../results/results.csv

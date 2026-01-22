@@ -27,9 +27,9 @@ struct ShuffledBuffers {
     }
 };
 
-// ----------------------------------------------------------------- //
+// =========================================================================
 // Constructor and destructor
-
+// =========================================================================
 Process::Process(int argc, char** argv) {
         MPI_Init(&argc, &argv);
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -45,9 +45,19 @@ Process::~Process() {
     MPI_Finalize();
 }
 
-// ----------------------------------------------------------------- //
-// PUBLIC METHODS
+int Process::getRank(){
+    return rank;
+}
+double Process::getCommTime(){
+    return comm_time;
+}
+double Process::getExecuteTime(){
+    return execution_time;
+}
 
+// =========================================================================
+// PUBLIC METHODS
+// =========================================================================
 void Process::setupData(string matrixName){
     if(rank==ROOT_RANK){
         
@@ -94,9 +104,20 @@ void Process::scatterData() {
         //Rank 0 organizes the full_idx, full_val and full_lenghts so they are grouped by rank.
         shuffleVectors(meta_nnz, meta_len, meta_x, shuffled);
     }
-    
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // REMOVE THIS CALCULATION IS WRONG
+    MPI_Barrier(MPI_COMM_WORLD); // Sync before starting
+    double comm_start_time = MPI_Wtime();
+
     // Send chunks of the matrix and vector X to each rank
     scattering(meta_nnz, meta_len, meta_x, shuffled, local_lengths);
+
+    MPI_Barrier(MPI_COMM_WORLD); // Sync to ensure slowest rank finishes
+    double comm_end_time = MPI_Wtime();
+
+    comm_time = comm_end_time - comm_start_time;
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // Build local CSR.pointer in each rank
     buildCSRpointer(local_lengths);
@@ -148,8 +169,9 @@ void Process::performLocalSpMV() {
     }
 }
 
-// ----------------------------------------------------------------- //
+// =========================================================================
 // PRIVATE METHODS
+// =========================================================================
 void Process::calculateLocalRowsCols(CommMetadata &meta_x){
     for (int i = 0; i < total_rows; i++) { //total_rows = total_cols
         if (i % worldSize == rank) {
@@ -392,8 +414,9 @@ void Process::exchangeGhostValues(const vector<vector<int>>& requests,
                   MPI_COMM_WORLD);
 }
 
-// Debug methods
-
+// =========================================================================
+// DEBUG METHODS
+// =========================================================================
 void Process::print() {
     MPI_Barrier(MPI_COMM_WORLD);
 
@@ -409,6 +432,8 @@ void Process::print() {
         for (int i = 0; i < limit; i++) printf("%.2f ", globalX[i]);
         if (globalX.size() > 10) printf("... (%lu total) ", globalX.size());
         printf("]\n");
+
+        //globalCSR.print(); //print first 10 entries of globalCSR
     }
     MPI_Barrier(MPI_COMM_WORLD);
 
