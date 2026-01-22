@@ -53,7 +53,6 @@ fi
 
 
 # --- 3. RUN LOOP ---
-NUM_RUNS=10
 MAX_PROCESS=128
 MATRICES=($MATRIX_DIR/*.mtx)
 
@@ -68,30 +67,26 @@ for MATRIX_FILE in "${MATRICES[@]}"; do
     # Loop for Process Counts: 1, 2, 4, ... 128
     NP=1
     while [ $NP -le $MAX_PROCESS ]; do
-        echo "  -> Running with NP = $NP ($NUM_RUNS iterations)"
+        echo "  -> Running with NP = $NP"
+                 
+        # Run MPI ONCE. 
+        # The C++ code does the 100 loops and prints the final P90 times.
+        # Filter for the "EXEC_TIME" line
+        OUTPUT_LINE=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" | grep "EXEC_TIME")
         
-        for (( i=1; i<=NUM_RUNS; i++ )); do
-            echo -n "."
-            
-            # Run MPI and filter for the "EXEC_TIME" line
-            # Get the full line first
-            OUTPUT_LINE=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" | grep "EXEC_TIME")
-            
-            # Extract Total Time (2nd word)
-            EXEC_TIME=$(echo "$OUTPUT_LINE" | awk '{print $2}')
+        # Extract Total Time (2nd word)
+        EXEC_TIME=$(echo "$OUTPUT_LINE" | awk '{print $2}')
 
-            # Extract Comm Time (4th word)
-            COMM_TIME=$(echo "$OUTPUT_LINE" | awk '{print $4}')
+        # Extract Comm Time (4th word)
+        COMM_TIME=$(echo "$OUTPUT_LINE" | awk '{print $4}')
 
-            # Save to CSV if the run was successful
-            if [ ! -z "$EXEC_TIME" ]; then
-                echo "$MATRIX_NAME,$NP,$i,$EXEC_TIME,$COMM_TIME" >> "$RESULTS"
-            else
-                echo "Warning: Run failed for NP=$NP Iter=$i"
-            fi
-        done
+        # Save to CSV if the run was successful
+        if [ ! -z "$EXEC_TIME" ]; then
+            echo "$MATRIX_NAME,$NP,$i,$EXEC_TIME,$COMM_TIME" >> "$RESULTS"
+        else
+            echo "Warning: Run failed for NP=$NP Iter=$i"
+        fi
         
-        echo "" 
         NP=$((NP * 2))
     done
 done

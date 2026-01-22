@@ -51,8 +51,8 @@ int Process::getRank(){
 double Process::getCommTime(){
     return comm_time;
 }
-double Process::getExecuteTime(){
-    return execution_time;
+double Process::getCompTime(){
+    return comp_time;
 }
 
 // =========================================================================
@@ -105,70 +105,125 @@ void Process::scatterData() {
         shuffleVectors(meta_nnz, meta_len, meta_x, shuffled);
     }
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // REMOVE THIS CALCULATION IS WRONG
-    MPI_Barrier(MPI_COMM_WORLD); // Sync before starting
-    double comm_start_time = MPI_Wtime();
-
     // Send chunks of the matrix and vector X to each rank
     scattering(meta_nnz, meta_len, meta_x, shuffled, local_lengths);
-
-    MPI_Barrier(MPI_COMM_WORLD); // Sync to ensure slowest rank finishes
-    double comm_end_time = MPI_Wtime();
-
-    comm_time = comm_end_time - comm_start_time;
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // Build local CSR.pointer in each rank
     buildCSRpointer(local_lengths);
 }
 
-void Process::exchangeVectorX(){
+void Process::exchangeGhostIdentifier(){
+    // Phase 1: Identify what data we are missing ("Ghost Entries")
+    identifyGhostEntries(this->requests, this->ghost_map);
+    
+    // Phase 2: Handshake: exchange Metadata (Tell neighbors how much we need)
+    exchangeMetadata(this->requests, this->send_counts, this->recv_counts);
+}
 
-    // Setup containers
-    vector<vector<int>> requests;
-    vector<int> send_counts, recv_counts;
+// =========================================================================
+// TRASNFER OF VALUES OF X (Exchange Indices, then Exchange Values)
+// =========================================================================
+void Process::exchangeGhostValues(const vector<vector<int>>& requests, 
+                                  const vector<int>& num_indices_I_request, 
+                                  const vector<int>& num_indices_others_need_from_me,
+                                  vector<double>& ghost_buffer) {
 
-    // Run the phases
-    identifyGhostEntries(requests, this->ghost_map);
+    // --- STEP A: PREPARE DISPLACEMENTS FOR MPI ---
+    vector<int> send_displs(worldSize, 0); // For outgoing requests
+    vector<int> recv_displs(worldSize, 0); // For incoming requests
+    
+    int total_requests_outgoing = 0;
+    int total_requests_incoming = 0;
 
-    exchangeMetadata(requests, send_counts, recv_counts);
+    for (int i = 0; i < worldSize; i++) {
+        send_displs[i] = (i == 0) ? 0 : send_displs[i-1] + num_indices_I_request[i-1];
+        recv_displs[i] = (i == 0) ? 0 : recv_displs[i-1] + num_indices_others_need_from_me[i-1];
+        
+        total_requests_outgoing += num_indices_I_request[i];
+        total_requests_incoming += num_indices_others_need_from_me[i];
+    }
 
-    exchangeGhostValues(requests, send_counts, recv_counts, this->ghost_buffer);
+    // Flatten my 2D requests into a 1D array for MPI
+    vector<int> flat_requests_outgoing;
+    flat_requests_outgoing.reserve(total_requests_outgoing);
+    for (const auto& req_vec : requests) {
+        flat_requests_outgoing.insert(flat_requests_outgoing.end(), req_vec.begin(), req_vec.end());
+    }
 
-    // --- DEBUG PRINT: Ghost Values (The Result) ---
-    //printDebugExchangeResult();
+    // Buffer to hold the indices OTHER people want from ME
+    vector<int> indices_others_want(total_requests_incoming);
 
+
+    // --- STEP B: EXCHANGE THE INDICES (Ask for what we want) ---
+    // We send 'flat_requests_outgoing' -> Others receive into 'indices_others_want'
+    MPI_Alltoallv(flat_requests_outgoing.data(), num_indices_I_request.data(), send_displs.data(), MPI_INT,
+                  indices_others_want.data(), num_indices_others_need_from_me.data(), recv_displs.data(), MPI_INT, 
+                  MPI_COMM_WORLD);
+
+
+    // --- STEP C: FETCH THE VALUES FROM MY LOCAL STORAGE ---
+    // Now I know exactly which Global Indices others want. I must look them up.
+    vector<double> values_others_need(total_requests_incoming);
+
+    for (int i = 0; i < total_requests_incoming; i++) {
+        int global_idx_requested = indices_others_want[i];
+        
+        // Convert Global Index -> Local Index (Cyclic Partitioning Logic)
+        // If I own Global 4, 8, 12... and worldSize is 4:
+        // Global 4 is at local index 1 (4 / 4 = 1).
+        int local_idx = global_idx_requested / worldSize; 
+
+        // Safety check (optional but recommended)
+        if (local_idx < 0 || local_idx >= localX.size()) {
+            printf("Error on Rank %d: Requested global %d maps to invalid local %d\n", rank, global_idx_requested, local_idx);
+            MPI_Abort(MPI_COMM_WORLD, -1);
+        }
+
+        values_others_need[i] = localX[local_idx];
+    }
+
+    // --- STEP D: SEND THE VALUES BACK (Reply to requests) ---
+    ghost_buffer.resize(total_requests_outgoing);
+
+    // Note carefully: The send/recv counts are FLIPPED here compared to Step B.
+    // We are sending data back to satisfy the requests we just received.
+    MPI_Alltoallv(values_others_need.data(), num_indices_others_need_from_me.data(), recv_displs.data(), MPI_DOUBLE,
+                  ghost_buffer.data(), num_indices_I_request.data(), send_displs.data(), MPI_DOUBLE, 
+                  MPI_COMM_WORLD);
 }
 
 // Perform Local SpMV (Compute y = Ax)
-void Process::performLocalSpMV() {
+void Process::runCalculation(int num_iter) {
     
+    vector<double> total_comm(num_iter);
+    vector<double> total_comp(num_iter);
+
     localY.assign(localCSR.nrows, 0.0);
 
-    for (int i = 0; i < localCSR.nrows; i++) {
-        double sum = 0.0;
+    // --- THE MAIN SOLVER LOOP ---
+    for (int iter = 0; iter < num_iter; iter++) {
         
-        for (int k = localCSR.pointer[i]; k < localCSR.pointer[i+1]; k++) {
-            int global_col = localCSR.index[k];
-            double x_val;
+        // A. MEASURE COMMUNICATION (The Ghost Exchange)
+        MPI_Barrier(MPI_COMM_WORLD); // Optional: Sync for pure comm measurement
+        
+        double start = MPI_Wtime();
+        exchangeGhostValues(this->requests, this->send_counts, this->recv_counts, this->ghost_buffer); // Only exchanges the doubles!
+        double end = MPI_Wtime();
+        
+        total_comm[iter] = (end - start)*1000; //ms
 
-            // CHECK: Is this column local or ghost?
-            if (global_col % worldSize == rank) {
-                // I own it! Math: local_index = global / worldSize
-                x_val = localX[global_col / worldSize];
-            } else {
-                // It's a ghost! Use the map to find where we put it in the buffer
-                // .at() is safer than [] because it throws an error if missing
-                x_val = ghost_buffer[ghost_map.at(global_col)];
-            }
-            
-            sum += localCSR.data[k] * x_val;
-        }
-        localY[i] = sum;
+        // B. MEASURE COMPUTATION (The Math)
+        // (No barrier needed here, we want to see if imbalance slows us down)
+        start = MPI_Wtime();
+        computelocalSpMV();
+        end = MPI_Wtime();
+        
+        total_comp[iter] = (end - start)*1000; //ms
     }
-}
 
+    calculateP90(total_comm, total_comp);
+
+}
 // =========================================================================
 // PRIVATE METHODS
 // =========================================================================
@@ -342,76 +397,59 @@ void Process::exchangeMetadata(const vector<vector<int>>& requests,
 
 }
 
-// =========================================================================
-// PHASE 3: The Handshake (Exchange Indices, then Exchange Values)
-// =========================================================================
-void Process::exchangeGhostValues(const vector<vector<int>>& requests, 
-                                  const vector<int>& num_indices_I_request, 
-                                  const vector<int>& num_indices_others_need_from_me,
-                                  vector<double>& ghost_buffer) {
-
-    // --- STEP A: PREPARE DISPLACEMENTS FOR MPI ---
-    vector<int> send_displs(worldSize, 0); // For outgoing requests
-    vector<int> recv_displs(worldSize, 0); // For incoming requests
-    
-    int total_requests_outgoing = 0;
-    int total_requests_incoming = 0;
-
-    for (int i = 0; i < worldSize; i++) {
-        send_displs[i] = (i == 0) ? 0 : send_displs[i-1] + num_indices_I_request[i-1];
-        recv_displs[i] = (i == 0) ? 0 : recv_displs[i-1] + num_indices_others_need_from_me[i-1];
+void Process::computelocalSpMV(){
+    for (int i = 0; i < localCSR.nrows; i++) {
+        double sum = 0.0;
         
-        total_requests_outgoing += num_indices_I_request[i];
-        total_requests_incoming += num_indices_others_need_from_me[i];
-    }
+        for (int k = localCSR.pointer[i]; k < localCSR.pointer[i+1]; k++) {
+            int global_col = localCSR.index[k];
+            double x_val;
 
-    // Flatten my 2D requests into a 1D array for MPI
-    vector<int> flat_requests_outgoing;
-    flat_requests_outgoing.reserve(total_requests_outgoing);
-    for (const auto& req_vec : requests) {
-        flat_requests_outgoing.insert(flat_requests_outgoing.end(), req_vec.begin(), req_vec.end());
-    }
-
-    // Buffer to hold the indices OTHER people want from ME
-    vector<int> indices_others_want(total_requests_incoming);
-
-
-    // --- STEP B: EXCHANGE THE INDICES (Ask for what we want) ---
-    // We send 'flat_requests_outgoing' -> Others receive into 'indices_others_want'
-    MPI_Alltoallv(flat_requests_outgoing.data(), num_indices_I_request.data(), send_displs.data(), MPI_INT,
-                  indices_others_want.data(), num_indices_others_need_from_me.data(), recv_displs.data(), MPI_INT, 
-                  MPI_COMM_WORLD);
-
-
-    // --- STEP C: FETCH THE VALUES FROM MY LOCAL STORAGE ---
-    // Now I know exactly which Global Indices others want. I must look them up.
-    vector<double> values_others_need(total_requests_incoming);
-
-    for (int i = 0; i < total_requests_incoming; i++) {
-        int global_idx_requested = indices_others_want[i];
-        
-        // Convert Global Index -> Local Index (Cyclic Partitioning Logic)
-        // If I own Global 4, 8, 12... and worldSize is 4:
-        // Global 4 is at local index 1 (4 / 4 = 1).
-        int local_idx = global_idx_requested / worldSize; 
-
-        // Safety check (optional but recommended)
-        if (local_idx < 0 || local_idx >= localX.size()) {
-            printf("Error on Rank %d: Requested global %d maps to invalid local %d\n", rank, global_idx_requested, local_idx);
-            MPI_Abort(MPI_COMM_WORLD, -1);
+            // CHECK: Is this column local or ghost?
+            if (global_col % worldSize == rank) {
+                // I own it! Math: local_index = global / worldSize
+                x_val = localX[global_col / worldSize];
+            } else {
+                // It's a ghost! Use the map to find where we put it in the buffer
+                // .at() is safer than [] because it throws an error if missing
+                x_val = ghost_buffer[ghost_map[global_col]];
+            }
+            sum += localCSR.data[k] * x_val;
         }
-
-        values_others_need[i] = localX[local_idx];
+        localY[i] = sum;
     }
+}
 
-    // --- STEP D: SEND THE VALUES BACK (Reply to requests) ---
-    ghost_buffer.resize(total_requests_outgoing);
+//calculate P90 of times
+void Process::calculateP90(vector<double> &local_comm, vector<double> &local_comp){
+    
+    int num_iter = local_comm.size();
+    
+    // 1. Gather the WORST time across all ranks for each iteration
+    // We cannot just use Rank 0's time; we need the bottleneck time.
+    vector<double> max_comm(num_iter);
+    vector<double> max_comp(num_iter);
 
-    // Note carefully: The send/recv counts are FLIPPED here compared to Step B.
-    // We are sending data back to satisfy the requests we just received.
-    MPI_Alltoallv(values_others_need.data(), num_indices_others_need_from_me.data(), recv_displs.data(), MPI_DOUBLE,
-                  ghost_buffer.data(), num_indices_I_request.data(), send_displs.data(), MPI_DOUBLE, 
-                  MPI_COMM_WORLD);
+    MPI_Reduce(local_comm.data(), max_comm.data(), num_iter, MPI_DOUBLE, MPI_MAX, ROOT_RANK, MPI_COMM_WORLD);
+    MPI_Reduce(local_comp.data(), max_comp.data(), num_iter, MPI_DOUBLE, MPI_MAX, ROOT_RANK, MPI_COMM_WORLD);
+
+    // 2. ONLY ROOT Calculates P90
+    if (rank == ROOT_RANK) {
+        
+        // Sort to find percentiles
+        std::sort(max_comm.begin(), max_comm.end());
+        std::sort(max_comp.begin(), max_comp.end());
+
+        // Calculate 90th percentile index (P90)
+        // For 10 iterations, index 9. (0.9 * 10 = 9)
+        int p90_index = (int)(0.9 * num_iter);
+        if (p90_index >= num_iter) p90_index = num_iter - 1; // Safety clamp
+
+        this->comm_time = max_comm[p90_index];
+        this->comp_time = max_comp[p90_index];
+        
+        // Printing is handled by your main() later, or you can print here
+    }
 }
 
 // =========================================================================

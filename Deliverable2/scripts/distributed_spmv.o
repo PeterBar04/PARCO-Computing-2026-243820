@@ -1,5 +1,5 @@
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
--rwxr-xr-x 1 pietro.baroni-2 ADA-9393 2952 Jan 22 12:03 compile.sh
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 2835 Jan 22 17:35 compile.sh
 Using the following compiler versions:
 gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)
 Copyright (C) 2015 Free Software Foundation, Inc.
@@ -15,20 +15,12 @@ Compiling...
 ==================================================
 Processing Matrix: twotone.mtx
 ==================================================
-  -> Running with NP = 1 (10 iterations)
-..........
-  -> Running with NP = 2 (10 iterations)
-..........
-  -> Running with NP = 4 (10 iterations)
-..........
-  -> Running with NP = 8 (10 iterations)
-..........
-  -> Running with NP = 16 (10 iterations)
-..........
-  -> Running with NP = 32 (10 iterations)
-..........
-  -> Running with NP = 64 (10 iterations)
-..........
-  -> Running with NP = 128 (10 iterations)
-..........
+  -> Running with NP = 1 ( iterations)
+  -> Running with NP = 2 ( iterations)
+  -> Running with NP = 4 ( iterations)
+  -> Running with NP = 8 ( iterations)
+  -> Running with NP = 16 ( iterations)
+  -> Running with NP = 32 ( iterations)
+  -> Running with NP = 64 ( iterations)
+  -> Running with NP = 128 ( iterations)
 Done! Results saved in ./../results/results.csv
