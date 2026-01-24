@@ -3,7 +3,7 @@
 #PBS -o ./distributed_spmv.o
 #PBS -e ./distributed_spmv.e
 #PBS -q short_cpuQ
-#PBS -l walltime=1:00:00
+#PBS -l walltime=2:00:00
 #PBS -l select=2:ncpus=64:mpiprocs=64:mem=16gb
 
 
@@ -27,8 +27,8 @@ cd /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
 
 # 2. Check if we are actually in the right place (for debugging)
 echo "Current directory is: $(pwd)"
-ls -l compile.sh
+ls -l compile_weak.sh
 
 # Call the compilation and execution script
-chmod +x ./compile.sh
-./compile.sh
+chmod +x ./compile_weak.sh
+./compile_weak.sh

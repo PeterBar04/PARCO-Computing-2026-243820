@@ -1,26 +1,47 @@
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
--rwxr-xr-x 1 pietro.baroni-2 ADA-9393 2835 Jan 22 17:35 compile.sh
-Using the following compiler versions:
-gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39)
-Copyright (C) 2015 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-g++-9.1.0 (GCC) 9.1.0
-Copyright (C) 2019 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-Compiling...
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 3536 Jan 24 13:29 compile_weak.sh
+Matrix files missing. Running Python generator...
+Virtual environment found. Activating...
+Generating matrices in '../data/weak_scaling'...
+  -> NP=1: File 'weak_1.mtx' already exists. Skipping.
+  -> NP=2: File 'weak_2.mtx' already exists. Skipping.
+  -> NP=4: File 'weak_4.mtx' already exists. Skipping.
+  -> NP=8: File 'weak_8.mtx' already exists. Skipping.
+  -> NP=16: File 'weak_16.mtx' already exists. Skipping.
+  -> NP=32: Generating 320000x320000... Done.
+  -> NP=64: Generating 640000x640000... Done.
+  -> NP=128: Generating 1280000x1280000... Done.
+All matrices check/generation complete.
+Compiling C++ Code...
 ==================================================
-Processing Matrix: twotone.mtx
+Weak Scaling: NP=1 on weak_1.mtx
 ==================================================
-  -> Running with NP = 1 ( iterations)
-  -> Running with NP = 2 ( iterations)
-  -> Running with NP = 4 ( iterations)
-  -> Running with NP = 8 ( iterations)
-  -> Running with NP = 16 ( iterations)
-  -> Running with NP = 32 ( iterations)
-  -> Running with NP = 64 ( iterations)
-  -> Running with NP = 128 ( iterations)
-Done! Results saved in ./../results/results.csv
+  -> Done. Time: 0.361681ms
+==================================================
+Weak Scaling: NP=2 on weak_2.mtx
+==================================================
+  -> Done. Time: 6.237268ms
+==================================================
+Weak Scaling: NP=4 on weak_4.mtx
+==================================================
+  -> Done. Time: 10.950327ms
+==================================================
+Weak Scaling: NP=8 on weak_8.mtx
+==================================================
+  -> Done. Time: 15.653610ms
+==================================================
+Weak Scaling: NP=16 on weak_16.mtx
+==================================================
+  -> Done. Time: 21.247149ms
+==================================================
+Weak Scaling: NP=32 on weak_32.mtx
+==================================================
+  -> Done. Time: 27.069569ms
+==================================================
+Weak Scaling: NP=64 on weak_64.mtx
+==================================================
+  -> Done. Time: 39.642334ms
+==================================================
+Weak Scaling: NP=128 on weak_128.mtx
+==================================================
+  -> Done. Time: 60.448170ms
