@@ -26,11 +26,13 @@ int main(int argc, char** argv) {
 
     p.runCalculation(100); //100 = num of iteration
 
+    p.printMetrics();
+
     // 4. Print ONLY from Rank 0 with a unique "Tag"
     if (p.getRank() == ROOT_RANK) {
         // "EXEC_TIME" is the keyword we will look for in Bash
         printf("EXEC_TIME %.6f COMM_TIME %.6f\n", p.getCompTime(), p.getCommTime());
-}
+    }
 
     //p.print();
 

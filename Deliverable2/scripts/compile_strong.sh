@@ -28,17 +28,16 @@ mpicxx --version  # Note: MPICH often uses -version or --version
 SCRIPT_DIR=$(dirname "$0")
 REPO_ROOT="$SCRIPT_DIR/.."
 SRC_DIR="$REPO_ROOT/src"
-MATRIX_DIR="$REPO_ROOT/data"
+MATRIX_DIR="$REPO_ROOT/data/strong_scaling"
 
 OUT_FILE="$SRC_DIR/distributed_spmv.out"
-RESULTS="$REPO_ROOT/results/results.csv"
+RESULTS="$REPO_ROOT/results/strong_scaling_results.csv"
 
 # Verify directory exists
 mkdir -p "$REPO_ROOT/results"
 
-# Write Header (Overwrites old file)
-echo "Matrix,NumProcess,Iteration,ExecutionTime,CommunicationTime" > "$RESULTS"
-
+# Write Header 
+echo "Matrix,NumProcess,ExecutionTime_P90,CommunicationTime_P90,Min_NNZ,Max_NNZ,Avg_NNZ,Imbalance_Ratio,Min_Comm,Max_Comm,Avg_Comm,GFLOPS,Efficiency,Speedup" > "$RESULTS"
 
 # --- 2. COMPILE ---
 # GCC 9.1.0 supports C++17, so we keep the flag.
@@ -67,27 +66,71 @@ for MATRIX_FILE in "${MATRICES[@]}"; do
     # Loop for Process Counts: 1, 2, 4, ... 128
     NP=1
     while [ $NP -le $MAX_PROCESS ]; do
-        echo "  -> Running with NP = $NP"
-                 
-        # Run MPI ONCE. 
-        # The C++ code does the 100 loops and prints the final P90 times.
-        # Filter for the "EXEC_TIME" line
-        OUTPUT_LINE=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" | grep "EXEC_TIME")
+        echo "=================================================="
+        echo "Strong Scaling: NP=$NP on $MATRIX_NAME"
+        echo "=================================================="
         
-        # Extract Total Time (2nd word)
-        EXEC_TIME=$(echo "$OUTPUT_LINE" | awk '{print $2}')
+        if [ -f "$MATRIX_FILE" ]; then
+            # Run the program and capture ALL output to a variable
+            # We use '2>&1' to ensure we capture both stdout and stderr just in case
+            FULL_OUTPUT=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" 100 2>&1)
 
-        # Extract Comm Time (4th word)
-        COMM_TIME=$(echo "$OUTPUT_LINE" | awk '{print $4}')
+            # 1. PARSE STANDARD TIMES (Existing logic)
+            # We use 'grep' on the captured variable $FULL_OUTPUT
+            TIME_LINE=$(echo "$FULL_OUTPUT" | grep "EXEC_TIME")
+            TOTAL_TIME=$(echo "$TIME_LINE" | awk '{print $2}')
+            COMM_TIME=$(echo "$TIME_LINE" | awk '{print $4}')
+            
+            # 2. PARSE BONUS METRICS (New logic)
+            BONUS_LINE=$(echo "$FULL_OUTPUT" | grep "BONUS_DATA")
+            
+            # Extract the 6 values (Cols 2 through 7 because Col 1 is the tag "BONUS_DATA")
+            MIN_NNZ=$(echo "$BONUS_LINE" | awk '{print $2}')
+            MAX_NNZ=$(echo "$BONUS_LINE" | awk '{print $3}')
+            AVG_NNZ=$(echo "$BONUS_LINE" | awk '{print $4}')
+            IMBALANCE_RATIO=$(echo "$BONUS_LINE" | awk '{print $5}')
+            MIN_COMM=$(echo "$BONUS_LINE" | awk '{print $6}')
+            MAX_COMM=$(echo "$BONUS_LINE" | awk '{print $7}')
+            AVG_COMM=$(echo "$BONUS_LINE" | awk '{print $8}')
 
-        # Save to CSV if the run was successful
-        if [ ! -z "$EXEC_TIME" ]; then
-            echo "$MATRIX_NAME,$NP,$i,$EXEC_TIME,$COMM_TIME" >> "$RESULTS"
+            # --- STRONG SCALING MATH ---
+            if [ "$NP" -eq 1 ]; then
+                T_BASE=$TOTAL_TIME
+            fi
+
+            # 2.5. Calculate metrics using awk
+            METRICS=$(awk -v t1="$T_BASE" -v tn="$TOTAL_TIME" -v np="$NP" 'BEGIN {
+                if (tn > 0 && t1 > 0) {
+                    speedup = t1 / tn;       # Formula: Old_Time / New_Time
+                    eff = speedup / np;      # Formula: Speedup / N
+                    printf "%.4f %.4f", eff, speedup;
+                } else {
+                    print "0.0000 0.0000"
+                }
+            }')
+
+            EFF=$(echo "$METRICS" | awk '{print $1}')
+            SPD=$(echo "$METRICS" | awk '{print $2}')
+
+             # 3. CALCULATE GFLOPS
+            # Formula: (2 * Avg_NNZ * NP) / (Total_Time_ms * 1,000,000)
+            GFLOPS=$(awk -v nnz="$AVG_NNZ" -v np="$NP" -v time="$TOTAL_TIME" 'BEGIN {
+                if (time > 0) printf "%.4f", (2 * nnz * np) / (time * 1000000);
+                else print "0"
+            }')
+                
+            # 4. SAVE TO CSV
+            if [ ! -z "$TOTAL_TIME" ]; then
+                echo "$MATRIX_NAME,$NP,$TOTAL_TIME,$COMM_TIME,$MIN_NNZ,$MAX_NNZ,$AVG_NNZ,$IMBALANCE_RATIO,$MIN_COMM,$MAX_COMM,$AVG_COMM,$GFLOPS,$EFF,$SPD" >> "$RESULTS"
+                echo "  -> Done. Time: ${TOTAL_TIME}ms"
+            else
+                echo "  -> Failed (Crash or no output)."
+            fi
+            
+            NP=$((NP * 2))
         else
-            echo "Warning: Run failed for NP=$NP Iter=$i"
+            echo "  -> Error: File $MATRIX_FILE not found."
         fi
-        
-        NP=$((NP * 2))
     done
 done
 

@@ -72,7 +72,7 @@ fi
 
 # --- RUN WEAK SCALING (TEST MODE) ---
 mkdir -p "$REPO_ROOT/results"
-echo "Matrix,NumProcess,ExecutionTime_P90,CommunicationTime_P90" > "$RESULTS"
+echo "Matrix,NumProcess,ExecutionTime_P90,CommunicationTime_P90,Min_NNZ,Max_NNZ,Avg_NNZ,Imbalance_Ratio,Min_Comm,Max_Comm,Avg_Comm,GFLOPS,Efficiency,Speedup" > "$RESULTS"
 
 # --- RUN WEAK SCALING ---
 # We manually define the pairs: (Procs MatrixFile)
@@ -86,6 +86,9 @@ BENCHMARKS[32]="weak_32.mtx"
 BENCHMARKS[64]="weak_64.mtx"
 BENCHMARKS[128]="weak_128.mtx"
 
+# Initialize base time
+T_BASE=0
+
 # Iterate through the keys (1, 2, 4...)
 for NP in 1 2 4 8 16 32 64 128; do
     MATRIX_FILE="$DATA_DIR/${BENCHMARKS[$NP]}"
@@ -96,14 +99,59 @@ for NP in 1 2 4 8 16 32 64 128; do
     echo "=================================================="
 
     if [ -f "$MATRIX_FILE" ]; then
-        # Run exactly like before
-        OUTPUT_LINE=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" 100 | grep "EXEC_TIME")
+        # Run the program and capture ALL output to a variable
+        # We use '2>&1' to ensure we capture both stdout and stderr just in case
+        FULL_OUTPUT=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" 100 2>&1)
+
+        # 2. PARSE STANDARD TIMES (Existing logic)
+        # We use 'grep' on the captured variable $FULL_OUTPUT
+        TIME_LINE=$(echo "$FULL_OUTPUT" | grep "EXEC_TIME")
+        TOTAL_TIME=$(echo "$TIME_LINE" | awk '{print $2}')
+        COMM_TIME=$(echo "$TIME_LINE" | awk '{print $4}')
         
-        TOTAL_TIME=$(echo "$OUTPUT_LINE" | awk '{print $2}')
-        COMM_TIME=$(echo "$OUTPUT_LINE" | awk '{print $4}')
+        # 3. PARSE BONUS METRICS (New logic)
+        BONUS_LINE=$(echo "$FULL_OUTPUT" | grep "BONUS_DATA")
         
+        # Extract the 6 values (Cols 2 through 7 because Col 1 is the tag "BONUS_DATA")
+        MIN_NNZ=$(echo "$BONUS_LINE" | awk '{print $2}')
+        MAX_NNZ=$(echo "$BONUS_LINE" | awk '{print $3}')
+        AVG_NNZ=$(echo "$BONUS_LINE" | awk '{print $4}')
+        IMBALANCE_RATIO=$(echo "$BONUS_LINE" | awk '{print $5}')
+        MIN_COMM=$(echo "$BONUS_LINE" | awk '{print $6}')
+        MAX_COMM=$(echo "$BONUS_LINE" | awk '{print $7}')
+        AVG_COMM=$(echo "$BONUS_LINE" | awk '{print $8}')
+
+        # 1. Capture T_BASE if this is the first iteration (NP=1)
+        if [ "$NP" -eq 1 ]; then
+            T_BASE=$TOTAL_TIME
+        fi
+
+        # 2. Calculate Efficiency and Speedup using awk
+        # We pass T_BASE, TOTAL_TIME, and NP to awk
+        METRICS=$(awk -v t1="$T_BASE" -v tn="$TOTAL_TIME" -v np="$NP" 'BEGIN {
+            if (tn > 0 && t1 > 0) {
+                spd = np * (t1 / tn);    # Calculate Scaled Speedup first
+                eff = spd / np;          # Then divide by N
+                printf "%.4f %.4f", eff, spd;
+            } else {
+                print "0.0000 0.0000"
+            }
+        }')
+
+        # Split the result into two variables
+        EFFICIENCY=$(echo "$METRICS" | awk '{print $1}')
+        SPEEDUP=$(echo "$METRICS" | awk '{print $2}')
+
+        # 3. CALCULATE GFLOPS
+        # Formula: (2 * Avg_NNZ * NP) / (Total_Time_ms * 1,000,000)
+        GFLOPS=$(awk -v nnz="$AVG_NNZ" -v np="$NP" -v time="$TOTAL_TIME" 'BEGIN {
+            if (time > 0) printf "%.4f", (2 * nnz * np) / (time * 1000000);
+            else print "0"
+        }')
+        
+        # 4. SAVE TO CSV
         if [ ! -z "$TOTAL_TIME" ]; then
-            echo "$MATRIX_NAME,$NP,$TOTAL_TIME,$COMM_TIME" >> "$RESULTS"
+            echo "$MATRIX_NAME,$NP,$TOTAL_TIME,$COMM_TIME,$MIN_NNZ,$MAX_NNZ,$AVG_NNZ,$IMBALANCE_RATIO,$MIN_COMM,$MAX_COMM,$AVG_COMM,$GFLOPS,$EFFICIENCY,$SPEEDUP" >> "$RESULTS"
             echo "  -> Done. Time: ${TOTAL_TIME}ms"
         else
             echo "  -> Failed (Crash or no output)."

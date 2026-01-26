@@ -1,47 +1,50 @@
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
--rwxr-xr-x 1 pietro.baroni-2 ADA-9393 3536 Jan 24 13:29 compile_weak.sh
-Matrix files missing. Running Python generator...
-Virtual environment found. Activating...
-Generating matrices in '../data/weak_scaling'...
-  -> NP=1: File 'weak_1.mtx' already exists. Skipping.
-  -> NP=2: File 'weak_2.mtx' already exists. Skipping.
-  -> NP=4: File 'weak_4.mtx' already exists. Skipping.
-  -> NP=8: File 'weak_8.mtx' already exists. Skipping.
-  -> NP=16: File 'weak_16.mtx' already exists. Skipping.
-  -> NP=32: Generating 320000x320000... Done.
-  -> NP=64: Generating 640000x640000... Done.
-  -> NP=128: Generating 1280000x1280000... Done.
-All matrices check/generation complete.
-Compiling C++ Code...
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5144 Jan 26 10:56 compile_strong.sh
+Using the following compiler versions:
+gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-36)
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+g++-9.1.0 (GCC) 9.1.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Compiling...
 ==================================================
-Weak Scaling: NP=1 on weak_1.mtx
+Processing Matrix: twotone.mtx
 ==================================================
-  -> Done. Time: 0.361681ms
 ==================================================
-Weak Scaling: NP=2 on weak_2.mtx
+Strong Scaling: NP=1 on twotone.mtx
 ==================================================
-  -> Done. Time: 6.237268ms
+  -> Done. Time: 3.456593ms
 ==================================================
-Weak Scaling: NP=4 on weak_4.mtx
+Strong Scaling: NP=2 on twotone.mtx
 ==================================================
-  -> Done. Time: 10.950327ms
+  -> Done. Time: 4.952192ms
 ==================================================
-Weak Scaling: NP=8 on weak_8.mtx
+Strong Scaling: NP=4 on twotone.mtx
 ==================================================
-  -> Done. Time: 15.653610ms
+  -> Done. Time: 3.662586ms
 ==================================================
-Weak Scaling: NP=16 on weak_16.mtx
+Strong Scaling: NP=8 on twotone.mtx
 ==================================================
-  -> Done. Time: 21.247149ms
+  -> Done. Time: 2.624750ms
 ==================================================
-Weak Scaling: NP=32 on weak_32.mtx
+Strong Scaling: NP=16 on twotone.mtx
 ==================================================
-  -> Done. Time: 27.069569ms
+  -> Done. Time: 1.571894ms
 ==================================================
-Weak Scaling: NP=64 on weak_64.mtx
+Strong Scaling: NP=32 on twotone.mtx
 ==================================================
-  -> Done. Time: 39.642334ms
+  -> Done. Time: 0.977993ms
 ==================================================
-Weak Scaling: NP=128 on weak_128.mtx
+Strong Scaling: NP=64 on twotone.mtx
 ==================================================
-  -> Done. Time: 60.448170ms
+  -> Done. Time: 0.585794ms
+==================================================
+Strong Scaling: NP=128 on twotone.mtx
+==================================================
+  -> Done. Time: 0.746489ms
+Done! Results saved in ./../results/strong_scaling_results.csv

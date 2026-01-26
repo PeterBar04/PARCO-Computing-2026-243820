@@ -27,8 +27,15 @@ cd /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
 
 # 2. Check if we are actually in the right place (for debugging)
 echo "Current directory is: $(pwd)"
-ls -l compile_weak.sh
+#ls -l compile_weak.sh
 
 # Call the compilation and execution script
-chmod +x ./compile_weak.sh
-./compile_weak.sh
+#chmod +x ./compile_weak.sh
+#./compile_weak.sh
+
+ls -l compile_strong.sh
+
+# Call the compilation and execution script
+chmod +x ./compile_strong.sh
+./compile_strong.sh
+

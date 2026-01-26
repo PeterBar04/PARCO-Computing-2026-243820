@@ -1,9 +1,0 @@
-Matrix,NumProcess,Iteration,ExecutionTime,CommunicationTime
-twotone.mtx,1,,3.915071,0.001431
-twotone.mtx,2,,27.823687,0.678062
-twotone.mtx,4,,21.239281,0.956297
-twotone.mtx,8,,11.051893,0.685930
-twotone.mtx,16,,5.671024,0.489473
-twotone.mtx,32,,2.652407,0.383377
-twotone.mtx,64,,1.441717,0.542879
-twotone.mtx,128,,1.084805,1024.616718

@@ -339,7 +339,7 @@ void Process::initGlobalX(vector<double>& v, int cols){
 // =========================================================================
 // PHASE 1: Identify what data we are missing ("Ghost Entries")
 // =========================================================================
-void Process::identifyGhostEntries(vector<vector<int>>& requests, map<int, int>& ghost_map) {
+void Process::identifyGhostEntries(vector<vector<int>>& requests, unordered_map<int, int>& ghost_map) {
     // requests[target_rank] will store the list of global indices we need from them
     requests.resize(worldSize);
     
@@ -608,4 +608,60 @@ void Process::printDebugExchangeResult(){
         }
     }
     MPI_Barrier(MPI_COMM_WORLD);
+}
+
+void Process::printMetrics(){
+    // --- METRIC 1: COMPUTATION (Load Balance) ---
+    // The "work" is proportional to the Number of Non-Zeros (NNZ)
+    long local_nnz = localCSR.index.size(); 
+    
+    long min_nnz, max_nnz, sum_nnz;
+
+    // Gather stats to Root
+    MPI_Reduce(&local_nnz, &min_nnz, 1, MPI_LONG, MPI_MIN, ROOT_RANK, MPI_COMM_WORLD);
+    MPI_Reduce(&local_nnz, &max_nnz, 1, MPI_LONG, MPI_MAX, ROOT_RANK, MPI_COMM_WORLD);
+    MPI_Reduce(&local_nnz, &sum_nnz, 1, MPI_LONG, MPI_SUM, ROOT_RANK, MPI_COMM_WORLD);
+
+    // --- METRIC 2: COMMUNICATION (Volume) ---
+    // Volume = (Total doubles Sent) + (Total doubles Received)
+    long local_comm_volume = 0;
+    
+    // Sum up everything in your send/recv lists
+    for (int c : send_counts) local_comm_volume += c;
+    for (int c : recv_counts) local_comm_volume += c;
+
+    long min_comm, max_comm, sum_comm;
+
+    MPI_Reduce(&local_comm_volume, &min_comm, 1, MPI_LONG, MPI_MIN, ROOT_RANK, MPI_COMM_WORLD);
+    MPI_Reduce(&local_comm_volume, &max_comm, 1, MPI_LONG, MPI_MAX, ROOT_RANK, MPI_COMM_WORLD);
+    MPI_Reduce(&local_comm_volume, &sum_comm, 1, MPI_LONG, MPI_SUM, ROOT_RANK, MPI_COMM_WORLD);
+
+    // --- PRINT RESULTS (Rank 0 only) ---
+    if (rank == ROOT_RANK) {
+        double avg_nnz = (double)sum_nnz / worldSize;
+        double avg_comm = (double)sum_comm / worldSize;
+        
+        // Calculate Imbalance Ratio (1.0 is perfect, 2.0 means worst rank has 2x work of avg)
+        double imbalance_nnz = (avg_nnz > 0) ? (double)max_nnz / avg_nnz : 0.0;
+
+        // 1. Human Readable (Keep this for debugging/logs)
+        printf("\n================ BONUS METRICS ================\n");
+        printf("1. Computation Load (NNZ per Rank):\n");
+        printf("   Min: %ld\n", min_nnz);
+        printf("   Max: %ld\n", max_nnz);
+        printf("   Avg: %.1f\n", avg_nnz);
+        printf("   Imbalance Ratio: %.2f (Ideal = 1.0)\n", imbalance_nnz);
+        
+        printf("\n2. Communication Volume (Doubles Exchanged):\n");
+        printf("   Min: %ld\n", min_comm);
+        printf("   Max: %ld\n", max_comm);
+        printf("   Avg: %.1f\n", avg_comm);
+        printf("===============================================\n");
+
+        // 2. MACHINE READABLE (Add this line for the bash script!)
+        // Format: TAG min_nnz max_nnz avg_nnz imbalance_nnz min_comm max_comm avg_comm
+        printf("BONUS_DATA %ld %ld %.2f %.2f %ld %ld %.2f\n", 
+               min_nnz, max_nnz, avg_nnz, imbalance_nnz, 
+               min_comm, max_comm, avg_comm);
+    }
 }

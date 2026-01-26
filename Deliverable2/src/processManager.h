@@ -5,7 +5,7 @@
 #include <mpi.h>
 #include <random>
 #include <set>
-#include <map>
+#include <unordered_map> 
 #include <algorithm>
 
 using namespace std;
@@ -40,7 +40,7 @@ private:
     vector<int> send_counts, recv_counts;
 
     // Values used to store values of x exchanged with other ranks
-    map<int, int> ghost_map;
+    unordered_map<int, int> ghost_map;
     vector<double> ghost_buffer;
 
     // Time values
@@ -57,7 +57,7 @@ private:
     void buildCSRpointer(vector<int> &local_lengths);
 
     // Methods used in exchangeGhostIdentifier()
-    void identifyGhostEntries(vector<vector<int>>& requests, map<int, int>& ghost_map);    
+    void identifyGhostEntries(vector<vector<int>>& requests, unordered_map<int, int>& ghost_map);    
     void exchangeMetadata(const vector<vector<int>>& requests, 
                                vector<int>& num_indices_I_request, 
                                vector<int>& num_indices_others_need_from_me);
@@ -101,6 +101,7 @@ public:
 
     // Debug
     void print(); 
+    void printMetrics();
   
     // Destructor
     ~Process(); 
