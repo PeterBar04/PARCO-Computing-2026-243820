@@ -4,3 +4,7 @@ Professors often suggest this because it is excellent for Load Balancing. If the
 
 We observe a significant latency jump between NP=1 and NP=2. This is expected because NP=1 runs entirely in local memory with contiguous access. At NP=2, the cyclic partition of a random matrix forces 50% of accesses to use the ghost_map (a red-black tree), which introduces $O(\log N)$ lookup overhead compared to the $O(1)$ array access at NP=1.
 At NP=1: Your code is essentially a serial program. The CPU predicts the branch if (col % size == rank) correctly 100% of the time, and you never do the slow map lookup.
+
+NNZ per Rank (Computation Load Balance):What it is: The number of non-zero elements stored locally on each processor. Since your loop runs once per non-zero ($y += A_{ij} \times x_j$), this represents the computational workload.Why it matters:Ideal: $Min \approx Max$. Everyone finishes at the same time.Bad: $Max \gg Avg$. One processor has way more work (the "straggler"). The entire cluster has to wait for this one slow rank to finish, wasting resources.
+
+Communication Volume (Network Load):What it is: The total count of double values a rank sends and receives during the Ghost Exchange.Why it matters:Unstructured (Random) Matrices: You will see High Volume. Ranks need data from everywhere.Structured (Banded) Matrices: You will see Low Volume. Ranks only need data from immediate neighbors (Rank $i-1$, $i+1$).
