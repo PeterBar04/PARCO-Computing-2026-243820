@@ -8,11 +8,11 @@
 
 
 # Print the name of the file that contains the list of the nodes assigned to the job and list all the nodes
-#NODES=$(cat $PBS_NODEFILE)
+NODES=$(cat $PBS_NODEFILE)
 #echo The running nodes are $NODES
 
 # Get the list of unique nodes assigned to the job
-#NODES=$(sort -u $PBS_NODEFILE)
+NODES=$(sort -u $PBS_NODEFILE)
 #echo The running nodes are $NODES
 
 # Loop through each node and get architecture information
@@ -23,19 +23,22 @@
 
 
 # Change to the directory where the job was submitted
-cd /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
+cd "$PBS_O_WORKDIR"
 
 # 2. Check if we are actually in the right place (for debugging)
 echo "Current directory is: $(pwd)"
-#ls -l compile_weak.sh
+ls -l compile_weak.sh
 
 # Call the compilation and execution script
-#chmod +x ./compile_weak.sh
+chmod +x ./compile_weak.sh
 #./compile_weak.sh
 
 ls -l compile_strong.sh
 
 # Call the compilation and execution script
 chmod +x ./compile_strong.sh
-./compile_strong.sh
+#./compile_strong.sh
 
+
+chmod +x ./generate_plot.sh
+./generate_plot.sh

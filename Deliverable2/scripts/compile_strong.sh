@@ -78,8 +78,11 @@ for MATRIX_FILE in "${MATRICES[@]}"; do
             # 1. PARSE STANDARD TIMES (Existing logic)
             # We use 'grep' on the captured variable $FULL_OUTPUT
             TIME_LINE=$(echo "$FULL_OUTPUT" | grep "EXEC_TIME")
-            TOTAL_TIME=$(echo "$TIME_LINE" | awk '{print $2}')
+            EXEC_TIME=$(echo "$TIME_LINE" | awk '{print $2}')
             COMM_TIME=$(echo "$TIME_LINE" | awk '{print $4}')
+
+            # Sum them up for the "Real" Total Time
+            TOTAL_TIME=$(awk -v e="$EXEC_TIME" -v c="$COMM_TIME" 'BEGIN {print e + c}')
             
             # 2. PARSE BONUS METRICS (New logic)
             BONUS_LINE=$(echo "$FULL_OUTPUT" | grep "BONUS_DATA")
@@ -120,8 +123,8 @@ for MATRIX_FILE in "${MATRICES[@]}"; do
             }')
                 
             # 4. SAVE TO CSV
-            if [ ! -z "$TOTAL_TIME" ]; then
-                echo "$MATRIX_NAME,$NP,$TOTAL_TIME,$COMM_TIME,$MIN_NNZ,$MAX_NNZ,$AVG_NNZ,$IMBALANCE_RATIO,$MIN_COMM,$MAX_COMM,$AVG_COMM,$GFLOPS,$EFF,$SPD" >> "$RESULTS"
+            if [ ! -z "$EXEC_TIME" ]; then
+                echo "$MATRIX_NAME,$NP,$EXEC_TIME,$COMM_TIME,$MIN_NNZ,$MAX_NNZ,$AVG_NNZ,$IMBALANCE_RATIO,$MIN_COMM,$MAX_COMM,$AVG_COMM,$GFLOPS,$EFF,$SPD" >> "$RESULTS"
                 echo "  -> Done. Time: ${TOTAL_TIME}ms"
             else
                 echo "  -> Failed (Crash or no output)."

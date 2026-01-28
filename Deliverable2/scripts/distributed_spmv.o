@@ -1,50 +1,14 @@
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
--rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5144 Jan 26 10:56 compile_strong.sh
-Using the following compiler versions:
-gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-36)
-Copyright (C) 2015 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5931 Jan 28 16:04 compile_weak.sh
+-rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5283 Jan 28 16:21 compile_strong.sh
+========================================
+Plotting Strong Scaling Data
+CSV File: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/../results/strong_scaling_results.csv
+Script:   /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/plot_strong_scaling.py
+========================================
+  -> Environment activated.
+  -> Fixing dependencies (Numpy incompatibility)...
+DEBUG: Setting Log Scale Base: 0.001192
+Plot saved to: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/plots/strong_scaling_time_log.png
 
-g++-9.1.0 (GCC) 9.1.0
-Copyright (C) 2019 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-Compiling...
-==================================================
-Processing Matrix: twotone.mtx
-==================================================
-==================================================
-Strong Scaling: NP=1 on twotone.mtx
-==================================================
-  -> Done. Time: 3.456593ms
-==================================================
-Strong Scaling: NP=2 on twotone.mtx
-==================================================
-  -> Done. Time: 4.952192ms
-==================================================
-Strong Scaling: NP=4 on twotone.mtx
-==================================================
-  -> Done. Time: 3.662586ms
-==================================================
-Strong Scaling: NP=8 on twotone.mtx
-==================================================
-  -> Done. Time: 2.624750ms
-==================================================
-Strong Scaling: NP=16 on twotone.mtx
-==================================================
-  -> Done. Time: 1.571894ms
-==================================================
-Strong Scaling: NP=32 on twotone.mtx
-==================================================
-  -> Done. Time: 0.977993ms
-==================================================
-Strong Scaling: NP=64 on twotone.mtx
-==================================================
-  -> Done. Time: 0.585794ms
-==================================================
-Strong Scaling: NP=128 on twotone.mtx
-==================================================
-  -> Done. Time: 0.746489ms
-Done! Results saved in ./../results/strong_scaling_results.csv
+✅ Success! Plot generated.
