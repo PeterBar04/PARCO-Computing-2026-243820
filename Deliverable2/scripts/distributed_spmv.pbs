@@ -31,14 +31,17 @@ ls -l compile_weak.sh
 
 # Call the compilation and execution script
 chmod +x ./compile_weak.sh
-#./compile_weak.sh
+./compile_weak.sh
 
 ls -l compile_strong.sh
 
 # Call the compilation and execution script
 chmod +x ./compile_strong.sh
-#./compile_strong.sh
+./compile_strong.sh
 
 
 chmod +x ./generate_plot.sh
 ./generate_plot.sh
+
+chmod +x ./generate_weak_plots.sh
+./generate_weak_plots.sh

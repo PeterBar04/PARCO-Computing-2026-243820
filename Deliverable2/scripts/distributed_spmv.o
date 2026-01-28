@@ -1,6 +1,228 @@
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
 -rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5931 Jan 28 16:04 compile_weak.sh
+Check file './../data/weak_scaling/weak_128.mtx' found. Skipping Python generation.
+Compiling C++ Code...
+==================================================
+Weak Scaling: NP=1 on weak_1.mtx
+==================================================
+  -> Done. Time: 0.133038ms
+==================================================
+Weak Scaling: NP=2 on weak_2.mtx
+==================================================
+  -> Done. Time: 0.220776ms
+==================================================
+Weak Scaling: NP=4 on weak_4.mtx
+==================================================
+  -> Done. Time: 0.31972ms
+==================================================
+Weak Scaling: NP=8 on weak_8.mtx
+==================================================
+  -> Done. Time: 0.419855ms
+==================================================
+Weak Scaling: NP=16 on weak_16.mtx
+==================================================
+  -> Done. Time: 0.630856ms
+==================================================
+Weak Scaling: NP=32 on weak_32.mtx
+==================================================
+  -> Done. Time: 0.957728ms
+==================================================
+Weak Scaling: NP=64 on weak_64.mtx
+==================================================
+  -> Done. Time: 2.00486ms
+==================================================
+Weak Scaling: NP=128 on weak_128.mtx
+==================================================
+  -> Done. Time: 457.702ms
 -rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5283 Jan 28 16:21 compile_strong.sh
+Using the following compiler versions:
+gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+g++-9.1.0 (GCC) 9.1.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Compiling...
+==================================================
+Processing Matrix: atmosmodj.mtx
+==================================================
+==================================================
+Strong Scaling: NP=1 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 13.9167ms
+==================================================
+Strong Scaling: NP=2 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 11.9042ms
+==================================================
+Strong Scaling: NP=4 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 8.20422ms
+==================================================
+Strong Scaling: NP=8 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 5.8167ms
+==================================================
+Strong Scaling: NP=16 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 3.78609ms
+==================================================
+Strong Scaling: NP=32 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 3.02458ms
+==================================================
+Strong Scaling: NP=64 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 3.01003ms
+==================================================
+Strong Scaling: NP=128 on atmosmodj.mtx
+==================================================
+  -> Done. Time: 80.5068ms
+==================================================
+Processing Matrix: ML_Laplace.mtx
+==================================================
+==================================================
+Strong Scaling: NP=1 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 39.2103ms
+==================================================
+Strong Scaling: NP=2 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 21.2774ms
+==================================================
+Strong Scaling: NP=4 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 12.1505ms
+==================================================
+Strong Scaling: NP=8 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 7.47871ms
+==================================================
+Strong Scaling: NP=16 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 5.26214ms
+==================================================
+Strong Scaling: NP=32 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 6.43706ms
+==================================================
+Strong Scaling: NP=64 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 8.89707ms
+==================================================
+Strong Scaling: NP=128 on ML_Laplace.mtx
+==================================================
+  -> Done. Time: 101.623ms
+==================================================
+Processing Matrix: PR02R.mtx
+==================================================
+==================================================
+Strong Scaling: NP=1 on PR02R.mtx
+==================================================
+  -> Done. Time: 12.0792ms
+==================================================
+Strong Scaling: NP=2 on PR02R.mtx
+==================================================
+  -> Done. Time: 9.8846ms
+==================================================
+Strong Scaling: NP=4 on PR02R.mtx
+==================================================
+  -> Done. Time: 8.77881ms
+==================================================
+Strong Scaling: NP=8 on PR02R.mtx
+==================================================
+  -> Done. Time: 8.12578ms
+==================================================
+Strong Scaling: NP=16 on PR02R.mtx
+==================================================
+  -> Done. Time: 7.85327ms
+==================================================
+Strong Scaling: NP=32 on PR02R.mtx
+==================================================
+  -> Done. Time: 7.99704ms
+==================================================
+Strong Scaling: NP=64 on PR02R.mtx
+==================================================
+  -> Done. Time: 17.6737ms
+==================================================
+Strong Scaling: NP=128 on PR02R.mtx
+==================================================
+  -> Done. Time: 84.6763ms
+==================================================
+Processing Matrix: torso1.mtx
+==================================================
+==================================================
+Strong Scaling: NP=1 on torso1.mtx
+==================================================
+  -> Done. Time: 12.7876ms
+==================================================
+Strong Scaling: NP=2 on torso1.mtx
+==================================================
+  -> Done. Time: 6.7687ms
+==================================================
+Strong Scaling: NP=4 on torso1.mtx
+==================================================
+  -> Done. Time: 3.58272ms
+==================================================
+Strong Scaling: NP=8 on torso1.mtx
+==================================================
+  -> Done. Time: 1.80173ms
+==================================================
+Strong Scaling: NP=16 on torso1.mtx
+==================================================
+  -> Done. Time: 0.882149ms
+==================================================
+Strong Scaling: NP=32 on torso1.mtx
+==================================================
+  -> Done. Time: 0.529051ms
+==================================================
+Strong Scaling: NP=64 on torso1.mtx
+==================================================
+  -> Done. Time: 26.4041ms
+==================================================
+Strong Scaling: NP=128 on torso1.mtx
+==================================================
+  -> Done. Time: 433.421ms
+==================================================
+Processing Matrix: twotone.mtx
+==================================================
+==================================================
+Strong Scaling: NP=1 on twotone.mtx
+==================================================
+  -> Done. Time: 1.54304ms
+==================================================
+Strong Scaling: NP=2 on twotone.mtx
+==================================================
+  -> Done. Time: 1.16849ms
+==================================================
+Strong Scaling: NP=4 on twotone.mtx
+==================================================
+  -> Done. Time: 0.941753ms
+==================================================
+Strong Scaling: NP=8 on twotone.mtx
+==================================================
+  -> Done. Time: 0.62871ms
+==================================================
+Strong Scaling: NP=16 on twotone.mtx
+==================================================
+  -> Done. Time: 0.319243ms
+==================================================
+Strong Scaling: NP=32 on twotone.mtx
+==================================================
+  -> Done. Time: 0.251293ms
+==================================================
+Strong Scaling: NP=64 on twotone.mtx
+==================================================
+  -> Done. Time: 0.222445ms
+==================================================
+Strong Scaling: NP=128 on twotone.mtx
+==================================================
+  -> Done. Time: 840.337ms
+Done! Results saved in ./../results/strong_scaling_results.csv
 ========================================
 Plotting Strong Scaling Data
 CSV File: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/../results/strong_scaling_results.csv
@@ -8,7 +230,14 @@ Script:   /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
 ========================================
   -> Environment activated.
   -> Fixing dependencies (Numpy incompatibility)...
-DEBUG: Setting Log Scale Base: 0.001192
+DEBUG: Setting Log Scale Base: 0.0008345
 Plot saved to: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/plots/strong_scaling_time_log.png
 
 ✅ Success! Plot generated.
+========================================
+Generating Weak Scaling Plots
+Input: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/../results/weak_scaling_results.csv
+========================================
+-> Checking libraries...
+Combined plot saved to: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/plots/weak_scaling_combined.png
+✅ Success! Plots saved in Deliverable2/plots/

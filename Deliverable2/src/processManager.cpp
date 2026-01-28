@@ -411,7 +411,6 @@ void Process::computelocalSpMV(){
                 x_val = localX[global_col / worldSize];
             } else {
                 // It's a ghost! Use the map to find where we put it in the buffer
-                // .at() is safer than [] because it throws an error if missing
                 x_val = ghost_buffer[ghost_map[global_col]];
             }
             sum += localCSR.data[k] * x_val;
