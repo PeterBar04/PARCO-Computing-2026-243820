@@ -24,6 +24,8 @@ int main(int argc, char** argv) {
     
     p.exchangeGhostIdentifier();
 
+    p.prepareOptimizedStructures();
+
     p.runCalculation(100); //100 = num of iteration
 
     p.printMetrics();
@@ -33,8 +35,6 @@ int main(int argc, char** argv) {
         // "EXEC_TIME" is the keyword we will look for in Bash
         printf("EXEC_TIME %.6f COMM_TIME %.6f\n", p.getCompTime(), p.getCommTime());
     }
-
-    //p.print();
 
 	return 0;
 }

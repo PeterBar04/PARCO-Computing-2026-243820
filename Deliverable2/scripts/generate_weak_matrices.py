@@ -5,7 +5,7 @@ import os
 
 # --- CONFIGURATION ---
 OUTPUT_DIR = "../data/weak_scaling"
-ROWS_PER_PROC = 10000   # Must match what you used before!
+ROWS_PER_PROC = 10000   
 COLS_PER_PROC = 10000   
 NNZ_PER_ROW = 10
 

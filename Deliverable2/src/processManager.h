@@ -38,10 +38,24 @@ private:
     // Setup containers for communication of ghost values
     vector<vector<int>> requests;
     vector<int> send_counts, recv_counts;
+    vector<int> send_displs, recv_displs;
 
     // Values used to store values of x exchanged with other ranks
     unordered_map<int, int> ghost_map;
     vector<double> ghost_buffer;
+
+    // Renumbered Indices for fast math
+    // This replaces localCSR.index for the actual calculation
+    vector<int> renumbered_indices;
+
+    // A unified vector: [ Local X values | Ghost X values ]
+    // This allows us to access ANY value (local or ghost) using a simple array index.
+    vector<double> combinedX;
+
+    //Persistent Communication Buffers
+    // We calculate these ONCE, so we don't need to ask "what do you need?" every iteration.
+    vector<int> indices_to_send; // Local indices of data I need to pack and send
+  
 
     // Time values
     double comm_time;
@@ -62,14 +76,19 @@ private:
                                vector<int>& num_indices_I_request, 
                                vector<int>& num_indices_others_need_from_me);
     
+    // Methods used inside runCalculation()
+    void exchangeGhostValues(); // Exchange values of vector x between ranks (do in loop)
+    void computelocalSpMV(); // Compute spmv
+    void calculateP90(vector<double> &local_comm, vector<double> &local_comp);  // Calculate p90 of times
+    
     //Debug
     void printDebugIdentify(vector<vector<int>> requests);
     void printDebugExchangeMeta(const vector<int>& num_indices_I_request, const vector<int>& num_indices_others_need_from_me);
     void printDebugExchangeResult();
 
-    void computelocalSpMV();
+    
 
-public:
+ public:
     // Constructor
     Process(int argc, char** argv); 
 
@@ -78,7 +97,7 @@ public:
     double getCommTime();
     double getCompTime();
 
-    // This method would encapsulate all your logic
+    // Read the matrix from file and generate the multiply vector
     void setupData(string matrixName);
 
     // This method handles the "heavy lifting" of moving data from Root to others
@@ -87,17 +106,10 @@ public:
     // Exchange identifier of vector x between ranks (made only once)
     void exchangeGhostIdentifier(); 
 
-    // Exchange values of vector x between ranks (do in loop)
-    void exchangeGhostValues(const vector<vector<int>>& requests, 
-                                  const vector<int>& num_indices_I_request, 
-                                  const vector<int>& num_indices_others_need_from_me,
-                                  vector<double>& ghost_buffer);
+    void prepareOptimizedStructures();
 
     // Perform spmv in local
     void runCalculation(int num_iter);
-
-    // Calculate p90 of times
-    void calculateP90(vector<double> &local_comm, vector<double> &local_comp);
 
     // Debug
     void print(); 

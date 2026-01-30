@@ -9,17 +9,17 @@
 
 # Print the name of the file that contains the list of the nodes assigned to the job and list all the nodes
 NODES=$(cat $PBS_NODEFILE)
-#echo The running nodes are $NODES
+echo The running nodes are $NODES
 
 # Get the list of unique nodes assigned to the job
 NODES=$(sort -u $PBS_NODEFILE)
-#echo The running nodes are $NODES
+echo The running nodes are $NODES
 
 # Loop through each node and get architecture information
-#for NODE in $NODES; do
-#    echo "Node: $NODE"
-#    ssh $NODE "lscpu"
-#done
+for NODE in $NODES; do
+    echo "Node: $NODE"
+    ssh $NODE "lscpu"
+done
 
 
 # Change to the directory where the job was submitted
@@ -39,9 +39,10 @@ ls -l compile_strong.sh
 chmod +x ./compile_strong.sh
 ./compile_strong.sh
 
+# Generate plots
 
-chmod +x ./generate_plot.sh
-./generate_plot.sh
+chmod +x ./generate_strong_plots.sh
+./generate_strong_plots.sh
 
 chmod +x ./generate_weak_plots.sh
 ./generate_weak_plots.sh
