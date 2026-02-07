@@ -1,6 +1,0 @@
-#!/home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/.venv/bin/python3
-import sys
-from fontTools.ttx import main
-if __name__ == '__main__':
-    sys.argv[0] = sys.argv[0].removesuffix('.exe')
-    sys.exit(main())
