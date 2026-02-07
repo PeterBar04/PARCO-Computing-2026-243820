@@ -1,19 +1,14 @@
 #!/bin/bash
 
-# --- 1. LOAD OLD CLUSTER MODULES ---
+# --- 1. LOAD CLUSTER MODULES ---
 # We load the compiler first, then the MPI library built for it.
 module purge             # Clear any default modules to avoid conflicts
-module load gcc91        # Load GCC 9.1.0
-module load mpich-3.2.1--gcc-9.1.0  # Load MPICH built with GCC 9.1
+module load GCC/12.3.0
+module load gompi/2023a  # Load MPICH built with GCC 9.1
 
 # --- Verification ---
 echo "Using the following compiler versions:"
 
-# Safety Check: If the specific MPI module above failed, try the generic one
-if ! command -v mpicxx &> /dev/null; then
-    echo "Specific MPI module not found. Trying generic mpich-3.2..."
-    module load mpich-3.2
-fi
 
 # Final check
 if ! command -v mpicxx &> /dev/null; then
@@ -73,8 +68,9 @@ for MATRIX_FILE in "${MATRICES[@]}"; do
         if [ -f "$MATRIX_FILE" ]; then
             # Run the program and capture ALL output to a variable
             # We use '2>&1' to ensure we capture both stdout and stderr just in case
-            FULL_OUTPUT=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" 100 2>&1)
+            FULL_OUTPUT=$(mpirun --oversubscribe -np $NP $OUT_FILE "$MATRIX_FILE" 100 2>&1)
 
+            
             # 1. PARSE STANDARD TIMES (Existing logic)
             # We use 'grep' on the captured variable $FULL_OUTPUT
             TIME_LINE=$(echo "$FULL_OUTPUT" | grep "EXEC_TIME")

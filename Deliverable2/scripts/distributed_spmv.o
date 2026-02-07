@@ -1,115 +1,136 @@
-The running nodes are hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node01.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it hpc-c11-node25.unitn.it
-The running nodes are hpc-c11-node01.unitn.it hpc-c11-node25.unitn.it
-Node: hpc-c11-node01.unitn.it
-Architecture:          x86_64
-CPU op-mode(s):        32-bit, 64-bit
-Byte Order:            Little Endian
-CPU(s):                96
-On-line CPU(s) list:   0-95
-Thread(s) per core:    1
-Core(s) per socket:    24
-Socket(s):             4
-NUMA node(s):          4
-Vendor ID:             GenuineIntel
-CPU family:            6
-Model:                 85
-Model name:            Intel(R) Xeon(R) Gold 6252N CPU @ 2.30GHz
-Stepping:              7
-CPU MHz:               2300.000
-BogoMIPS:              4600.00
-Virtualization:        VT-x
-L1d cache:             32K
-L1i cache:             32K
-L2 cache:              1024K
-L3 cache:              36608K
-NUMA node0 CPU(s):     0-23
-NUMA node1 CPU(s):     24-47
-NUMA node2 CPU(s):     48-71
-NUMA node3 CPU(s):     72-95
-Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch epb cat_l3 cdp_l3 invpcid_single intel_ppin intel_pt ssbd mba ibrs ibpb stibp ibrs_enhanced tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt clwb avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts pku ospke avx512_vnni md_clear spec_ctrl intel_stibp flush_l1d arch_capabilities
-Node: hpc-c11-node25.unitn.it
-Architecture:          x86_64
-CPU op-mode(s):        32-bit, 64-bit
-Byte Order:            Little Endian
-CPU(s):                96
-On-line CPU(s) list:   0-95
-Thread(s) per core:    1
-Core(s) per socket:    24
-Socket(s):             4
-NUMA node(s):          4
-Vendor ID:             GenuineIntel
-CPU family:            6
-Model:                 85
-Model name:            Intel(R) Xeon(R) Gold 6252N CPU @ 2.30GHz
-Stepping:              7
-CPU MHz:               2300.000
-BogoMIPS:              4600.00
-Virtualization:        VT-x
-L1d cache:             32K
-L1i cache:             32K
-L2 cache:              1024K
-L3 cache:              36608K
-NUMA node0 CPU(s):     0-23
-NUMA node1 CPU(s):     24-47
-NUMA node2 CPU(s):     48-71
-NUMA node3 CPU(s):     72-95
-Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch epb cat_l3 cdp_l3 invpcid_single intel_ppin ssbd mba rsb_ctxsw ibrs ibpb stibp ibrs_enhanced tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt clwb intel_pt avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts pku ospke avx512_vnni md_clear spec_ctrl intel_stibp flush_l1d arch_capabilities
+The running nodes are hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c12-n16.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it hpc3-c05-n01.unitn.it
+The running nodes are hpc3-c05-n01.unitn.it hpc3-c12-n16.unitn.it
+Node: hpc3-c05-n01.unitn.it
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           46 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  72
+On-line CPU(s) list:                     0-71
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Xeon(R) Gold 6140M CPU @ 2.30GHz
+CPU family:                              6
+Model:                                   85
+Thread(s) per core:                      1
+Core(s) per socket:                      18
+Socket(s):                               4
+Stepping:                                4
+BogoMIPS:                                4600.00
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 pti intel_ppin ssbd mba ibrs ibpb stibp fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt clwb intel_pt avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts pku ospke md_clear flush_l1d arch_capabilities
+L1d cache:                               2.3 MiB (72 instances)
+L1i cache:                               2.3 MiB (72 instances)
+L2 cache:                                72 MiB (72 instances)
+L3 cache:                                99 MiB (4 instances)
+NUMA node(s):                            4
+NUMA node0 CPU(s):                       0-17
+NUMA node1 CPU(s):                       18-35
+NUMA node2 CPU(s):                       36-53
+NUMA node3 CPU(s):                       54-71
+Vulnerability Gather data sampling:      Mitigation; Microcode
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             KVM: Mitigation: VMX unsupported
+Vulnerability L1tf:                      Mitigation; PTE Inversion
+Vulnerability Mds:                       Mitigation; Clear CPU buffers; SMT disabled
+Vulnerability Meltdown:                  Mitigation; PTI
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT disabled
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Mitigation; IBRS
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; IBRS; IBPB conditional; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Mitigation; Clear CPU buffers; SMT disabled
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+Node: hpc3-c12-n16.unitn.it
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           46 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  96
+On-line CPU(s) list:                     0-95
+Vendor ID:                               GenuineIntel
+Model name:                              Intel(R) Xeon(R) Gold 6252N CPU @ 2.30GHz
+CPU family:                              6
+Model:                                   85
+Thread(s) per core:                      1
+Core(s) per socket:                      24
+Socket(s):                               4
+Stepping:                                7
+BogoMIPS:                                4600.00
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cdp_l3 intel_ppin ssbd mba ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm mpx rdt_a avx512f avx512dq rdseed adx smap clflushopt clwb intel_pt avx512cd avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts pku ospke avx512_vnni md_clear flush_l1d arch_capabilities
+L1d cache:                               3 MiB (96 instances)
+L1i cache:                               3 MiB (96 instances)
+L2 cache:                                96 MiB (96 instances)
+L3 cache:                                143 MiB (4 instances)
+NUMA node(s):                            4
+NUMA node0 CPU(s):                       0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92
+NUMA node1 CPU(s):                       1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61,65,69,73,77,81,85,89,93
+NUMA node2 CPU(s):                       2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70,74,78,82,86,90,94
+NUMA node3 CPU(s):                       3,7,11,15,19,23,27,31,35,39,43,47,51,55,59,63,67,71,75,79,83,87,91,95
+Vulnerability Gather data sampling:      Mitigation; Microcode
+Vulnerability Indirect target selection: Mitigation; Aligned branch/return thunks
+Vulnerability Itlb multihit:             KVM: Mitigation: VMX unsupported
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Mitigation; Clear CPU buffers; SMT disabled
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Mitigation; Enhanced IBRS
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI SW loop, KVM SW loop
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Mitigation; TSX disabled
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
 Current directory is: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts
--rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5931 Jan 30 09:21 compile_weak.sh
-Matrix files missing. Running Python generator...
-Virtual environment found. Activating...
-Generating matrices in '../data/weak_scaling'...
-  -> NP=1: Generating 10000x10000... Done.
-  -> NP=2: Generating 20000x20000... Done.
-  -> NP=4: Generating 40000x40000... Done.
-  -> NP=8: Generating 80000x80000... Done.
-  -> NP=16: Generating 160000x160000... Done.
-  -> NP=32: Generating 320000x320000... Done.
-  -> NP=64: Generating 640000x640000... Done.
-  -> NP=128: Generating 1280000x1280000... Done.
-All matrices check/generation complete.
+-rwxr-xr-x 1 pietro.baroni-2 utenti cluster hpc (ada)-(9393) 4965 Feb  7 13:21 compile_weak.sh
+Check file './../data/weak_scaling/weak_128.mtx' found. Skipping Python generation.
 Compiling C++ Code...
 ==================================================
 Weak Scaling: NP=1 on weak_1.mtx
 ==================================================
-  -> Done. Time: 0.102759ms
+  -> Done. Time: 0.09614ms
 ==================================================
 Weak Scaling: NP=2 on weak_2.mtx
 ==================================================
-  -> Done. Time: 0.174761ms
+  -> Done. Time: 0.132334ms
 ==================================================
 Weak Scaling: NP=4 on weak_4.mtx
 ==================================================
-  -> Done. Time: 0.281572ms
+  -> Done. Time: 0.287736ms
 ==================================================
 Weak Scaling: NP=8 on weak_8.mtx
 ==================================================
-  -> Done. Time: 0.438691ms
+  -> Done. Time: 0.848445ms
 ==================================================
 Weak Scaling: NP=16 on weak_16.mtx
 ==================================================
-  -> Done. Time: 0.62418ms
+  -> Done. Time: 0.842885ms
 ==================================================
 Weak Scaling: NP=32 on weak_32.mtx
 ==================================================
-  -> Done. Time: 1.03951ms
+  -> Done. Time: 2.52396ms
 ==================================================
 Weak Scaling: NP=64 on weak_64.mtx
 ==================================================
-  -> Done. Time: 1.99413ms
+  -> Done. Time: 3.6316ms
 ==================================================
 Weak Scaling: NP=128 on weak_128.mtx
 ==================================================
-  -> Done. Time: 25.1424ms
--rwxr-xr-x 1 pietro.baroni-2 ADA-9393 5283 Jan 30 09:21 compile_strong.sh
+  -> Done. Time: 218.502ms
+-rwxr-xr-x 1 pietro.baroni-2 utenti cluster hpc (ada)-(9393) 5060 Feb  7 13:36 compile_strong.sh
 Using the following compiler versions:
-gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
-Copyright (C) 2015 Free Software Foundation, Inc.
+gcc (GCC) 12.3.0
+Copyright (C) 2022 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-g++-9.1.0 (GCC) 9.1.0
-Copyright (C) 2019 Free Software Foundation, Inc.
+g++ (GCC) 12.3.0
+Copyright (C) 2022 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -120,184 +141,184 @@ Processing Matrix: atmosmodj.mtx
 ==================================================
 Strong Scaling: NP=1 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 14.0519ms
+  -> Done. Time: 35.8817ms
 ==================================================
 Strong Scaling: NP=2 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 11.8418ms
+  -> Done. Time: 22.6596ms
 ==================================================
 Strong Scaling: NP=4 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 8.63361ms
+  -> Done. Time: 11.4626ms
 ==================================================
 Strong Scaling: NP=8 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 5.72777ms
+  -> Done. Time: 6.33368ms
 ==================================================
 Strong Scaling: NP=16 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 3.86429ms
+  -> Done. Time: 5.76111ms
 ==================================================
 Strong Scaling: NP=32 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 2.99954ms
+  -> Done. Time: 4.77262ms
 ==================================================
 Strong Scaling: NP=64 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 3.02768ms
+  -> Done. Time: 6.14407ms
 ==================================================
 Strong Scaling: NP=128 on atmosmodj.mtx
 ==================================================
-  -> Done. Time: 5.95045ms
+  -> Done. Time: 62.4653ms
 ==================================================
 Processing Matrix: ML_Laplace.mtx
 ==================================================
 ==================================================
 Strong Scaling: NP=1 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 39.2039ms
+  -> Done. Time: 66.3187ms
 ==================================================
 Strong Scaling: NP=2 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 21.3516ms
+  -> Done. Time: 36.9924ms
 ==================================================
 Strong Scaling: NP=4 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 12.1086ms
+  -> Done. Time: 19.6419ms
 ==================================================
 Strong Scaling: NP=8 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 7.49183ms
+  -> Done. Time: 12.4491ms
 ==================================================
 Strong Scaling: NP=16 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 5.27ms
+  -> Done. Time: 10.8361ms
 ==================================================
 Strong Scaling: NP=32 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 6.5198ms
+  -> Done. Time: 14.9308ms
 ==================================================
 Strong Scaling: NP=64 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 28.5265ms
+  -> Done. Time: 17.4591ms
 ==================================================
 Strong Scaling: NP=128 on ML_Laplace.mtx
 ==================================================
-  -> Done. Time: 53.4875ms
+  -> Done. Time: 428.828ms
 ==================================================
 Processing Matrix: torso1.mtx
 ==================================================
 ==================================================
 Strong Scaling: NP=1 on torso1.mtx
 ==================================================
-  -> Done. Time: 12.7587ms
+  -> Done. Time: 17.1457ms
 ==================================================
 Strong Scaling: NP=2 on torso1.mtx
 ==================================================
-  -> Done. Time: 6.74129ms
+  -> Done. Time: 10.6035ms
 ==================================================
 Strong Scaling: NP=4 on torso1.mtx
 ==================================================
-  -> Done. Time: 3.54385ms
+  -> Done. Time: 3.59623ms
 ==================================================
 Strong Scaling: NP=8 on torso1.mtx
 ==================================================
-  -> Done. Time: 1.82343ms
+  -> Done. Time: 2.4849ms
 ==================================================
 Strong Scaling: NP=16 on torso1.mtx
 ==================================================
-  -> Done. Time: 0.888825ms
+  -> Done. Time: 1.16149ms
 ==================================================
 Strong Scaling: NP=32 on torso1.mtx
 ==================================================
-  -> Done. Time: 0.53072ms
+  -> Done. Time: 0.927763ms
 ==================================================
 Strong Scaling: NP=64 on torso1.mtx
 ==================================================
-  -> Done. Time: 0.441313ms
+  -> Done. Time: 2.13513ms
 ==================================================
 Strong Scaling: NP=128 on torso1.mtx
 ==================================================
-  -> Done. Time: 52.3486ms
+  -> Done. Time: 46.8063ms
 ==================================================
 Processing Matrix: twotone.mtx
 ==================================================
 ==================================================
 Strong Scaling: NP=1 on twotone.mtx
 ==================================================
-  -> Done. Time: 1.54138ms
+  -> Done. Time: 2.4166ms
 ==================================================
 Strong Scaling: NP=2 on twotone.mtx
 ==================================================
-  -> Done. Time: 1.17659ms
+  -> Done. Time: 1.44633ms
 ==================================================
 Strong Scaling: NP=4 on twotone.mtx
 ==================================================
-  -> Done. Time: 0.916957ms
+  -> Done. Time: 0.832866ms
 ==================================================
 Strong Scaling: NP=8 on twotone.mtx
 ==================================================
-  -> Done. Time: 0.629187ms
+  -> Done. Time: 0.615514ms
 ==================================================
 Strong Scaling: NP=16 on twotone.mtx
 ==================================================
-  -> Done. Time: 0.322819ms
+  -> Done. Time: 0.592591ms
 ==================================================
 Strong Scaling: NP=32 on twotone.mtx
 ==================================================
-  -> Done. Time: 0.225067ms
+  -> Done. Time: 0.78636ms
 ==================================================
 Strong Scaling: NP=64 on twotone.mtx
 ==================================================
-  -> Done. Time: 0.22912ms
+  -> Done. Time: 1.65082ms
 ==================================================
 Strong Scaling: NP=128 on twotone.mtx
 ==================================================
-  -> Done. Time: 52.1204ms
+  -> Done. Time: 25.7636ms
 ==================================================
 Processing Matrix: venkat25.mtx
 ==================================================
 ==================================================
 Strong Scaling: NP=1 on venkat25.mtx
 ==================================================
-  -> Done. Time: 1.91283ms
+  -> Done. Time: 3.91661ms
 ==================================================
 Strong Scaling: NP=2 on venkat25.mtx
 ==================================================
-  -> Done. Time: 1.06239ms
+  -> Done. Time: 1.04874ms
 ==================================================
 Strong Scaling: NP=4 on venkat25.mtx
 ==================================================
-  -> Done. Time: 0.76127ms
+  -> Done. Time: 0.707512ms
 ==================================================
 Strong Scaling: NP=8 on venkat25.mtx
 ==================================================
-  -> Done. Time: 0.492334ms
+  -> Done. Time: 0.581022ms
 ==================================================
 Strong Scaling: NP=16 on venkat25.mtx
 ==================================================
-  -> Done. Time: 0.385761ms
+  -> Done. Time: 0.625187ms
 ==================================================
 Strong Scaling: NP=32 on venkat25.mtx
 ==================================================
-  -> Done. Time: 0.309229ms
+  -> Done. Time: 1.58424ms
 ==================================================
 Strong Scaling: NP=64 on venkat25.mtx
 ==================================================
-  -> Done. Time: 0.316859ms
+  -> Done. Time: 1.59102ms
 ==================================================
 Strong Scaling: NP=128 on venkat25.mtx
 ==================================================
-  -> Done. Time: 16.0139ms
+  -> Done. Time: 116.129ms
 Done! Results saved in ./../results/strong_scaling_results.csv
 ========================================
 Plotting Strong Scaling Data
 CSV File: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/../results/strong_scaling_results.csv
 Script:   /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/plot_strong_scaling.py
 ========================================
-  -> Environment activated.
-  -> Fixing dependencies (Numpy incompatibility)...
-DEBUG: Setting Log Scale Base: 0.000596
+-> Activated .venv
+-> Checking libraries...
+DEBUG: Setting Log Scale Base: 0.000373
 Plot saved to: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/plots/strong_scaling_time_log.png
 
 ✅ Success! Plot generated.
@@ -305,6 +326,7 @@ Plot saved to: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/pl
 Generating Weak Scaling Plots
 Input: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/scripts/../results/weak_scaling_results.csv
 ========================================
+-> Activated .venv
 -> Checking libraries...
 Combined plot saved to: /home/pietro.baroni-2/PARCO-Computing-2026-243820/Deliverable2/plots/weak_scaling_combined.png
 ✅ Success! Plots saved in Deliverable2/plots/

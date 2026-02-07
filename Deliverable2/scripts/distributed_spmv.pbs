@@ -2,9 +2,9 @@
 #PBS -N distributed_spmv
 #PBS -o ./distributed_spmv.o
 #PBS -e ./distributed_spmv.e
-#PBS -q short_cpuQ
+#PBS -q shortCPUQ
 #PBS -l walltime=2:00:00
-#PBS -l select=2:ncpus=64:mpiprocs=64:mem=16gb
+#PBS -l select=2:ncpus=64:mpiprocs=64:mem=120gb
 
 
 # Print the name of the file that contains the list of the nodes assigned to the job and list all the nodes

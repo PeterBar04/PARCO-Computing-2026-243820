@@ -34,26 +34,26 @@ echo "CSV File: $RESULTS"
 echo "Script:   $PYTHON_SCRIPT"
 echo "========================================"
 
-module load python-3.10.14_gcc91 2>/dev/null || echo "  -> Module load skipped (local?)"
+# 2. Environment Setup
+module load Miniforge3/24.11.3-0 2>/dev/null || echo "-> Module 'Miniforge3' load skipped (not found or local)"
 
-# 4. Activate & Fix Dependencies
-# Find the environment
+# 3. Activate Virtual Environment
+# Checks for .venv (hidden) or venv (standard)
 if [ -f "$REPO_ROOT/.venv/bin/activate" ]; then
     source "$REPO_ROOT/.venv/bin/activate"
+    echo "-> Activated .venv"
 elif [ -f "$REPO_ROOT/venv/bin/activate" ]; then
     source "$REPO_ROOT/venv/bin/activate"
+    echo "-> Activated venv"
 else
-    echo "Error: Could not find virtual environment (.venv or venv)"
+    echo "❌ Error: Virtual environment not found in $REPO_ROOT"
+    echo "   Please run the scaling script first to generate it."
     exit 1
 fi
 
-echo "  -> Environment activated."
-echo "  -> Fixing dependencies (Numpy incompatibility)..."
-
-# CRITICAL FIX: Force reinstall compatible versions
-# 1. Upgrade pip to handle wheels better
-# 2. Install Pandas 1.5.3 (compatible with old GCC)
-# 3. Install Numpy < 2.0 (compatible with Pandas 1.5.3)
+# 3. Dependencies Check (Critical Fixes)
+# forcing numpy<2.0.0 prevents binary incompatibility errors with pandas/matplotlib
+echo "-> Checking libraries..."
 pip install --upgrade pip --quiet
 pip install "pandas==1.5.3" "numpy<2.0.0" matplotlib --quiet
 

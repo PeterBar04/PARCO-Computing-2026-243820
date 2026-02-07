@@ -2,21 +2,19 @@
 
 # --- SETUP (Same as before) ---
 module purge
-module load gcc91
-module load mpich-3.2.1--gcc-9.1.0
+module load GCC/12.3.0
+module load gompi/2023a
 
 SCRIPT_DIR=$(dirname "$0")
 REPO_ROOT="$SCRIPT_DIR/.."
 SRC_DIR="$REPO_ROOT/src"
-DATA_DIR="$REPO_ROOT/data/weak_scaling" # Points to new folder
+DATA_DIR="$REPO_ROOT/data/weak_scaling" 
 OUT_FILE="$SRC_DIR/distributed_spmv.out"
 RESULTS="$REPO_ROOT/results/weak_scaling_results.csv"
 
 VENV_DIR="$REPO_ROOT/.venv"
 
-
 # 2. Define the "Check File" 
-# If this file exists, we assume all matrices are generated
 CHECK_FILE="$DATA_DIR/weak_128.mtx"
 
 # --- GENERATION STEP (Conditional) ---
@@ -31,13 +29,13 @@ else
     if [ ! -d "$VENV_DIR" ]; then
         echo "Virtual environment not found. Creating one..."
         
-        # Load the cluster python module
-        module load python-3.10.14_gcc91
+        # --- CHANGE 1: Load the available Miniforge module ---
+        module load Miniforge3/24.11.3-0
         
         # 1. Create the virtual environment in the project folder
         python3 -m venv "$VENV_DIR"
         
-        # 2. Activate it (This temporarily switches 'python3' to use the one inside .venv)
+        # 2. Activate it
         source "$VENV_DIR/bin/activate"
         
         # 3. Install dependencies inside this isolated environment
@@ -48,7 +46,8 @@ else
         
     else
         echo "Virtual environment found. Activating..."
-        module load python-3.10.14_gcc91
+        # --- CHANGE 2: Load the available Miniforge module ---
+        module load Miniforge3/24.11.3-0
         source "$VENV_DIR/bin/activate"
     fi
 
@@ -56,14 +55,14 @@ else
     python3 "$SCRIPT_DIR/generate_weak_matrices.py"
     
     deactivate
-    # Unload python to keep environment clean (optional)
-    module unload python-3.10.14_gcc91 
+    # --- CHANGE 3: Unload the correct module ---
+    module unload Miniforge3/24.11.3-0 
 fi
 
 
 # --- COMPILE C++ ---
 echo "Compiling C++ Code..."
-# --- COMPILE ---
+# ... (Rest of your script remains unchanged)
 mpicxx -std=c++17 -O3 $SRC_DIR/distributed_spmv.cpp "$SRC_DIR/matrixManager.cpp" "$SRC_DIR/processManager.cpp" -o "$OUT_FILE"
 
 if [ $? -ne 0 ]; then
@@ -76,7 +75,6 @@ mkdir -p "$REPO_ROOT/results"
 echo "Matrix,NumProcess,ExecutionTime_P90,CommunicationTime_P90,Min_NNZ,Max_NNZ,Avg_NNZ,Imbalance_Ratio,Min_Comm,Max_Comm,Avg_Comm,GFLOPS,Efficiency,Speedup" > "$RESULTS"
 
 # --- RUN WEAK SCALING ---
-# We manually define the pairs: (Procs MatrixFile)
 declare -A BENCHMARKS
 BENCHMARKS[1]="weak_1.mtx"
 BENCHMARKS[2]="weak_2.mtx"
@@ -87,10 +85,8 @@ BENCHMARKS[32]="weak_32.mtx"
 BENCHMARKS[64]="weak_64.mtx"
 BENCHMARKS[128]="weak_128.mtx"
 
-# Initialize base time
 T_BASE=0
 
-# Iterate through the keys (1, 2, 4...)
 for NP in 1 2 4 8 16 32 64 128; do
     MATRIX_FILE="$DATA_DIR/${BENCHMARKS[$NP]}"
     MATRIX_NAME=$(basename "$MATRIX_FILE")
@@ -100,23 +96,16 @@ for NP in 1 2 4 8 16 32 64 128; do
     echo "=================================================="
 
     if [ -f "$MATRIX_FILE" ]; then
-        # Run the program and capture ALL output to a variable
-        # We use '2>&1' to ensure we capture both stdout and stderr just in case
-        FULL_OUTPUT=$(mpirun -np $NP $OUT_FILE "$MATRIX_FILE" 100 2>&1)
-
-        # 2. PARSE STANDARD TIMES (Existing logic)
-        # We use 'grep' on the captured variable $FULL_OUTPUT
+       FULL_OUTPUT=$(mpirun --oversubscribe -np $NP $OUT_FILE "$MATRIX_FILE" 100 2>&1)
+           
         TIME_LINE=$(echo "$FULL_OUTPUT" | grep "EXEC_TIME")
         EXEC_TIME=$(echo "$TIME_LINE" | awk '{print $2}')
         COMM_TIME=$(echo "$TIME_LINE" | awk '{print $4}')
 
-        # Sum them up for the "Real" Total Time
         TOTAL_TIME=$(awk -v e="$EXEC_TIME" -v c="$COMM_TIME" 'BEGIN {print e + c}')
         
-        # 3. PARSE BONUS METRICS (New logic)
         BONUS_LINE=$(echo "$FULL_OUTPUT" | grep "BONUS_DATA")
         
-        # Extract the 6 values (Cols 2 through 7 because Col 1 is the tag "BONUS_DATA")
         MIN_NNZ=$(echo "$BONUS_LINE" | awk '{print $2}')
         MAX_NNZ=$(echo "$BONUS_LINE" | awk '{print $3}')
         AVG_NNZ=$(echo "$BONUS_LINE" | awk '{print $4}')
@@ -125,35 +114,28 @@ for NP in 1 2 4 8 16 32 64 128; do
         MAX_COMM=$(echo "$BONUS_LINE" | awk '{print $7}')
         AVG_COMM=$(echo "$BONUS_LINE" | awk '{print $8}')
 
-        # 1. Capture T_BASE if this is the first iteration (NP=1)
         if [ "$NP" -eq 1 ]; then
             T_BASE=$TOTAL_TIME
         fi
 
-        # 2. Calculate Efficiency and Speedup using awk
-        # We pass T_BASE, TOTAL_TIME, and NP to awk
         METRICS=$(awk -v t1="$T_BASE" -v tn="$TOTAL_TIME" -v np="$NP" 'BEGIN {
             if (tn > 0 && t1 > 0) {
-                spd = np * (t1 / tn);    # Calculate Scaled Speedup first
-                eff = spd / np;          # Then divide by N
+                spd = np * (t1 / tn);    
+                eff = spd / np;          
                 printf "%.4f %.4f", eff, spd;
             } else {
                 print "0.0000 0.0000"
             }
         }')
 
-        # Split the result into two variables
         EFFICIENCY=$(echo "$METRICS" | awk '{print $1}')
         SPEEDUP=$(echo "$METRICS" | awk '{print $2}')
 
-        # 3. CALCULATE GFLOPS
-        # Formula: (2 * Avg_NNZ * NP) / (Total_Time_ms * 1,000,000)
         GFLOPS=$(awk -v nnz="$AVG_NNZ" -v np="$NP" -v time="$TOTAL_TIME" 'BEGIN {
             if (time > 0) printf "%.4f", (2 * nnz * np) / (time * 1000000);
             else print "0"
         }')
         
-        # 4. SAVE TO CSV
         if [ ! -z "$EXEC_TIME" ]; then
             echo "$MATRIX_NAME,$NP,$EXEC_TIME,$COMM_TIME,$MIN_NNZ,$MAX_NNZ,$AVG_NNZ,$IMBALANCE_RATIO,$MIN_COMM,$MAX_COMM,$AVG_COMM,$GFLOPS,$EFFICIENCY,$SPEEDUP" >> "$RESULTS"
             echo "  -> Done. Time: ${TOTAL_TIME}ms"

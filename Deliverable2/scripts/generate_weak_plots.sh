@@ -26,18 +26,24 @@ echo "Input: $RESULTS"
 echo "========================================"
 
 # 2. Environment Setup
-module load python-3.10.14_gcc91 2>/dev/null || echo "-> Module load skipped"
+module load Miniforge3/24.11.3-0 2>/dev/null || echo "-> Module 'Miniforge3' load skipped (not found or local)"
 
+# 3. Activate Virtual Environment
+# Checks for .venv (hidden) or venv (standard)
 if [ -f "$REPO_ROOT/.venv/bin/activate" ]; then
     source "$REPO_ROOT/.venv/bin/activate"
+    echo "-> Activated .venv"
 elif [ -f "$REPO_ROOT/venv/bin/activate" ]; then
     source "$REPO_ROOT/venv/bin/activate"
+    echo "-> Activated venv"
 else
-    echo "❌ Error: Virtual environment not found."
+    echo "❌ Error: Virtual environment not found in $REPO_ROOT"
+    echo "   Please run the scaling script first to generate it."
     exit 1
 fi
 
-# 3. Dependencies Check (Fixing Numpy/Pandas versions)
+# 3. Dependencies Check (Critical Fixes)
+# forcing numpy<2.0.0 prevents binary incompatibility errors with pandas/matplotlib
 echo "-> Checking libraries..."
 pip install --upgrade pip --quiet
 pip install "pandas==1.5.3" "numpy<2.0.0" matplotlib --quiet
