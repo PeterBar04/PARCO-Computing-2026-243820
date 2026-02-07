@@ -1,1 +1,21 @@
-Deliverable2/data/
+# --- System & Python ---
+Deliverable2/.venv/
+venv/
+__pycache__/
+*.pyc
+
+# --- Data Directory ---
+# 1. Ignore everything inside data
+Deliverable2/data/*
+
+# 2. But do NOT ignore the specific subdirectories (so Git looks inside them)
+!Deliverable2/data/strong_scaling/
+!Deliverable2/data/weak_scaling/
+
+# 3. Ignore everything inside those subdirectories...
+Deliverable2/data/strong_scaling/*
+Deliverable2/data/weak_scaling/*
+
+# 4. ...EXCEPT the .gitkeep file (which we will create next)
+!Deliverable2/data/strong_scaling/.gitkeep
+!Deliverable2/data/weak_scaling/.gitkeep
