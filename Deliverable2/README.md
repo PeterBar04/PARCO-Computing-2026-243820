@@ -92,6 +92,7 @@ Results are stored in the `results/` directory as CSV files:
 * `CommunicationTime_P90`: Ghost value exchange time.
 * `Avg_NNZ`: Load balance metric.
 * `GFLOPS`: Effective throughput.
+* `Avg_Comm`: Communication volume. 
 * `Efficiency` & `Speedup`.
 
 ---
@@ -99,7 +100,7 @@ Results are stored in the `results/` directory as CSV files:
 ## Changing Parameters
 To modify the test scenario (e.g., change iterations or process counts), edit the variables inside `run_weak_scaling.sh` or `run_strong_scaling.sh`.
 
-* **BENCHMARKS**: An associative array mapping the number of processes (NP) to specific matrix files.
+* **BENCHMARKS**: An associative array mapping the number of processes (NP) to specific matrix files (only for weak scaling).
 * **NP Loop**: The `for NP in ...` loop controls which process counts are tested (currently 1 to 128).
 
 ## Cluster Notes
@@ -113,4 +114,5 @@ Below are the resource allocation directives used in the script. Users may need 
 ```bash
 module load GCC/12.3.0
 module load gompi/2023a
+
 module load python-3.10.14_gcc91
